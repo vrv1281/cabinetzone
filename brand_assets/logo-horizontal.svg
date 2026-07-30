@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 100" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- ── Icon mark ── -->
+
+  <!-- Outer square border -->
+  <rect x="3" y="3" width="94" height="94" stroke="white" stroke-width="3" fill="none"/>
+
+  <!-- Circle dot — top right, inside outer square -->
+  <circle cx="81.5" cy="21" r="5.5" fill="white"/>
+
+  <!-- Inner ZONE frame: horizontal line (top edge of inner box) -->
+  <line x1="22" y1="53" x2="97" y2="53" stroke="white" stroke-width="3"/>
+
+  <!-- Inner ZONE frame: vertical line (left edge of inner box) -->
+  <line x1="22" y1="53" x2="22" y2="97" stroke="white" stroke-width="3"/>
+
+  <!-- ── "CABINET ZONE" wordmark ── -->
+  <text
+    x="120"
+    y="71"
+    font-family="'Josefin Sans', 'Futura', 'Century Gothic', sans-serif"
+    font-weight="300"
+    font-size="44"
+    letter-spacing="7"
+    fill="white"
+  >CABINET ZONE</text>
+</svg>

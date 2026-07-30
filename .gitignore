@@ -1,0 +1,5 @@
+node_modules/
+.claude/
+temporary screenshots/
+*.DS_Store
+Thumbs.db

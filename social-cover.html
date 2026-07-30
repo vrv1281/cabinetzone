@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1640px; height: 624px; overflow: hidden; }
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  .wrap {
+    width: 1640px;
+    height: 624px;
+    background: #131720;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Left warm glow behind logo */
+  .glow-left {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,168,130,0.09) 0%, transparent 65%);
+    top: 50%; left: 340px;
+    transform: translate(-50%, -50%);
+  }
+  /* Right dark overlay */
+  .overlay-right {
+    position: absolute;
+    right: 0; top: 0;
+    width: 900px; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(13,17,26,0.6) 40%);
+  }
+  /* Thin horizontal accent lines */
+  .line-top {
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent 5%, rgba(196,168,130,0.15) 30%, rgba(196,168,130,0.15) 70%, transparent 95%);
+  }
+  .line-bottom {
+    position: absolute;
+    bottom: 48px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent 5%, rgba(196,168,130,0.15) 30%, rgba(196,168,130,0.15) 70%, transparent 95%);
+  }
+  /* Centered content wrapper */
+  .content-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    width: 1280px;
+    margin: 0 auto;
+  }
+  /* Left logo area */
+  .logo-area {
+    width: 400px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 32px;
+  }
+  .logo { width: 320px; height: auto; display: block; }
+  /* Divider line */
+  .vdivider {
+    position: relative;
+    z-index: 2;
+    width: 1px;
+    height: 280px;
+    background: linear-gradient(to bottom, transparent, rgba(196,168,130,0.35) 30%, rgba(196,168,130,0.35) 70%, transparent);
+    flex-shrink: 0;
+  }
+  /* Right text area */
+  .text-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0 0 56px;
+    gap: 16px;
+  }
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(196,168,130,0.5);
+  }
+  .label::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: rgba(196,168,130,0.4);
+    flex-shrink: 0;
+  }
+  .headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 74px;
+    font-weight: 300;
+    line-height: 1.05;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .headline em {
+    font-style: italic;
+    color: rgba(196,168,130,0.9);
+  }
+  .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.32);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .contact-divider {
+    height: 1px;
+    background: linear-gradient(to right, rgba(196,168,130,0.15) 65%, transparent 100%);
+    margin-bottom: 20px;
+  }
+  .contact-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .contact-item {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+    padding-right: 28px;
+    margin-right: 28px;
+    border-right: 1px solid rgba(196,168,130,0.2);
+  }
+  .contact-item:last-child {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+  }
+  .contact-item .ci-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .contact-item .ci-value {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(196,168,130,0.85);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="glow-left"></div>
+  <div class="overlay-right"></div>
+  <div class="line-top"></div>
+  <div class="line-bottom"></div>
+
+  <div class="content-wrap">
+  <div class="logo-area">
+    <img class="logo" src="http://localhost:3000/brand_assets/logo_white.png" alt="CabinetZone">
+  </div>
+
+  <div class="vdivider"></div>
+
+  <div class="text-area">
+    <div class="label">Melbourne's Custom Cabinet Makers</div>
+    <div class="headline">Crafted<br>with <em>Precision</em></div>
+    <div class="sub">Kitchens · Bathrooms · Built-Ins · Commercial</div>
+    <div class="contact-divider"></div>
+    <div class="contact-row">
+      <div class="contact-item">
+        <span class="ci-label">Phone</span>
+        <span class="ci-value">0495 000 365</span>
+      </div>
+      <div class="contact-item">
+        <span class="ci-label">Website</span>
+        <span class="ci-value">cabinetzone.com.au</span>
+      </div>
+      <div class="contact-item">
+        <span class="ci-label">Location</span>
+        <span class="ci-value">Laverton North VIC</span>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+</body>
+</html>

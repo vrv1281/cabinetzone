@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CabinetZone — Custom Cabinetry & Design</title>
+  <link rel="icon" type="image/png" href="brand_assets/favicon.png" />
+  <link rel="apple-touch-icon" href="brand_assets/favicon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/site.css" />
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--text); overflow-x: hidden; cursor: default; user-select: none; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; height: 100vh; min-height: 720px;
+      display: flex; align-items: flex-end; padding-bottom: 7rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 65% 35%, rgba(38, 52, 92, 0.75) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 75%, rgba(22, 30, 58, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(12, 18, 35, 0.5) 0%, transparent 45%),
+        linear-gradient(145deg, #0c1220 0%, #131d35 35%, #1a2540 65%, #0e1828 100%);
+      transform: scale(1.04);
+      transition: transform 9s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .hero-bg.ready { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 85%, rgba(196,168,130,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(19,23,32,0.4) 0%, transparent 60%),
+        linear-gradient(to top, rgba(13,17,26,0.95) 0%, rgba(13,17,26,0.55) 45%, rgba(13,17,26,0.15) 100%);
+    }
+
+    /* ── Scroll cue ── */
+    @keyframes scroll-cue-drop {
+      0%, 100% { transform: translateY(0); opacity: 0.7; }
+      50%       { transform: translateY(7px); opacity: 1; }
+    }
+    #scroll-cue { transition: opacity 0.7s ease; }
+    #scroll-cue.hidden { opacity: 0; pointer-events: none; }
+    #scroll-cue svg:first-child { animation: scroll-cue-drop 1.7s cubic-bezier(0.45,0.05,0.55,0.95) infinite; }
+    #scroll-cue svg:last-child  { animation: scroll-cue-drop 1.7s cubic-bezier(0.45,0.05,0.55,0.95) infinite 0.18s; }
+
+    /* ── Section label ── */
+    .label {
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+    }
+    .label::before {
+      content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--accent);
+    }
+    footer .label::before { display: none; }
+
+    /* ── Service cards ── */
+    .svc-card {
+      padding: 2.5rem 2.25rem; background: #fff;
+      border: 1px solid rgba(196,168,130,0.14);
+      position: relative; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(19,23,32,0.04), 0 8px 24px rgba(19,23,32,0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .svc-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .svc-card:hover { transform: translateY(-5px); border-color: rgba(196,168,130,0.38); box-shadow: 0 8px 24px rgba(19,23,32,0.07), 0 20px 56px rgba(196,168,130,0.1); }
+    .svc-card:hover::before { opacity: 1; }
+
+    .svc-arrow { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.75rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; transition: gap 0.25s ease; position: relative; z-index: 1; }
+    .svc-arrow:hover { gap: 0.875rem; }
+    .svc-arrow:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+    .svc-sketch {
+      position: absolute; bottom: 0; right: -2px;
+      width: 148px; height: auto;
+      opacity: 0.55; pointer-events: none;
+      color: var(--accent);
+      transition: opacity 0.35s ease;
+    }
+    .svc-card:hover .svc-sketch { opacity: 0.75; }
+
+    /* ── Portfolio ── */
+    .port-item { position: relative; overflow: hidden; cursor: pointer; display: block; }
+    .port-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.75s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,12,20,0.82) 0%, rgba(8,12,20,0.18) 52%, transparent 78%);
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 1.75rem;
+      transition: background 0.5s ease;
+    }
+    .port-info {
+      transform: translateY(28px); opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease;
+    }
+    .port-item:hover img { transform: scale(1.09); }
+    .port-item:hover .port-overlay { background: linear-gradient(to top, rgba(8,12,20,0.94) 0%, rgba(8,12,20,0.35) 55%, rgba(8,12,20,0.08) 82%, transparent 100%); }
+    .port-item:hover .port-info { transform: translateY(0); opacity: 1; }
+    .port-item:focus-visible .port-info { transform: translateY(0); opacity: 1; }
+    .port-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+    /* ── Lightbox ── */
+    #hz-lightbox {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(9,12,18,0.97);
+      display: none; flex-direction: column;
+    }
+    #hz-lightbox.open { display: flex; }
+    .hz-lb-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.125rem 2rem; flex-shrink: 0;
+      border-bottom: 1px solid rgba(196,168,130,0.08);
+    }
+    .hz-lb-close {
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(196,168,130,0.2); background: transparent; cursor: pointer;
+      color: rgba(255,255,255,0.55);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .hz-lb-close:hover { border-color: rgba(196,168,130,0.7); color: #fff; }
+    .hz-lb-stage {
+      flex: 1; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem 5rem;
+    }
+    #hz-lb-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; user-select: none; }
+    .hz-lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(196,168,130,0.22); cursor: pointer;
+      background: rgba(19,23,32,0.75); backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.65); z-index: 10;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .hz-lb-nav:hover { border-color: rgba(196,168,130,0.65); color: #fff; }
+    .hz-lb-nav.dim { opacity: 0.25; pointer-events: none; }
+    #hz-lb-prev { left: 1.25rem; }
+    #hz-lb-next { right: 1.25rem; }
+    .hz-lb-strip {
+      flex-shrink: 0; padding: 0.875rem 2rem;
+      border-top: 1px solid rgba(196,168,130,0.07);
+      display: flex; gap: 0.5rem; justify-content: center; overflow-x: auto;
+    }
+    .hz-lb-strip::-webkit-scrollbar { height: 2px; }
+    .hz-lb-strip::-webkit-scrollbar-thumb { background: rgba(196,168,130,0.4); }
+    .hz-lb-thumb {
+      width: 78px; height: 58px; object-fit: cover; flex-shrink: 0; cursor: pointer;
+      opacity: 0.38; border: 1px solid transparent;
+      transition: opacity 0.2s ease, border-color 0.2s ease;
+    }
+    .hz-lb-thumb:hover { opacity: 0.7; }
+    .hz-lb-thumb.active { opacity: 1; border-color: var(--accent); }
+
+
+
+    /* ── Form ── */
+    .finput {
+      width: 100%; padding: 0.875rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.875rem;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(196,168,130,0.2); color: #fff; outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .finput::placeholder { color: rgba(255,255,255,0.3); }
+    .finput:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+    .finput.invalid { border-color: rgba(220,90,90,0.7); }
+    .finput.valid   { border-color: rgba(80,180,120,0.5); }
+    select.finput { color: rgba(255,255,255,0.3); padding-right: 2.5rem; }
+    select.finput.has-value { color: #fff; }
+    .select-wrap { position: relative; }
+    .select-wrap svg { position:absolute; right:0.875rem; top:50%; transform:translateY(-50%); pointer-events:none; color:rgba(196,168,130,0.6); }
+    .field-error {
+      font-size: 0.68rem; letter-spacing: 0.04em;
+      color: #e08080; margin-top: 0.35rem;
+      display: none; padding-left: 0.125rem;
+    }
+    .field-error.visible { display: block; }
+    .form-banner {
+      padding: 0.875rem 1rem; font-size: 0.8rem; letter-spacing: 0.04em;
+      display: none; border: 1px solid;
+    }
+    .form-banner.error { display: block; color: #e08080; border-color: rgba(220,90,90,0.4); background: rgba(220,90,90,0.08); }
+    .form-banner.success { display: block; color: #70c090; border-color: rgba(80,180,120,0.4); background: rgba(80,180,120,0.08); }
+
+    /* ── Fade-up ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sketchAppear {
+      0%   { opacity: 0;    filter: blur(10px); transform: scale(1.03); }
+      25%  { opacity: 0.12; filter: blur(7px);  transform: scale(1.02); }
+      60%  { opacity: 0.55; filter: blur(2.5px);transform: scale(1.01); }
+      100% { opacity: 1;    filter: blur(0px);  transform: scale(1); }
+    }
+    .fu  { animation: fadeUp 0.75s ease forwards; }
+    .fu1 { animation-delay: 0.1s; opacity: 0; }
+    .fu2 { animation-delay: 0.25s; opacity: 0; }
+    .fu3 { animation-delay: 0.4s; opacity: 0; }
+    .fu4 { animation-delay: 0.55s; opacity: 0; }
+
+    /* ── Geometric accent (echoes logo frame) ── */
+    .geo-box {
+      position: absolute; border: 1px solid rgba(196,168,130,0.1); pointer-events: none;
+    }
+    /* ═══════════════════════════ MOBILE ══════════════════════ */
+    @media (max-width: 767px) {
+      /* All sections: tighten horizontal padding */
+      section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      section[style*="padding:9rem"]  { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+      section[style*="padding:5.5rem"] { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+
+      /* Grid stacking */
+      .mob-stack  { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+      .mob-2col   { grid-template-columns: 1fr 1fr !important; }
+
+      /* Process: single-column stack on mobile, centered */
+      .mob-process { grid-template-columns: 1fr !important; gap: 0 !important; }
+      /* Reduce internal padding for process steps on mobile so text isn't cramped */
+      .mob-process > div.reveal { padding-left: 1.5rem !important; padding-right: 1.5rem !important; padding-bottom: 2.5rem !important; }
+      /* Hide the decorative hairline connector — doesn't work at stacked layout */
+      .mob-process > div[style*="position:absolute"] { display: none !important; }
+
+      /* Hero: tighten padding */
+      .hero { padding-left: 0 !important; padding-right: 0 !important; }
+      .hero > div[style*="padding:0 3rem"] { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      /* Hero sketch: zoom out, clear the navbar, extend behind text */
+      .hero-sketch-wrap {
+        width: 200% !important;
+        left: -50% !important;
+        top: 8.5rem !important;
+        height: 68vh !important;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 55%, rgba(0,0,0,0.2) 80%, transparent 100%) !important;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 55%, rgba(0,0,0,0.2) 80%, transparent 100%) !important;
+      }
+      .hero-sketch-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+      }
+
+/* Contact info column: smaller padding */
+      #contact div[style*="padding:2rem"] { padding: 1.25rem !important; }
+
+      /* Scroll cue: ensure it doesn't get cut off */
+      #scroll-cue { bottom: 1.25rem !important; }
+
+      /* Services: tighten intro margin on mobile */
+      #services .mob-stack[style*="margin-bottom"] { margin-bottom: 2.5rem !important; }
+
+      /* Portfolio: force 1-col on mobile */
+      #work .mob-stack { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+
+      /* Portfolio tiles: always show title on touch screens */
+      .port-info { transform: translateY(0) !important; opacity: 1 !important; }
+
+      /* Footer logo: smaller on mobile */
+      footer img[style*="height:84px"] { height: 64px !important; }
+
+      /* Process section background — mobile */
+      /* Floor plan: render at 200% so SVG line details are large enough to read */
+      .proc-floorplan { width: 200% !important; left: -50% !important; opacity: 0.14 !important; transform: translateY(-50%) !important; }
+      /* Halos: scale up to fill the narrow section */
+      .proc-halo-l { width: 180% !important; height: 60% !important; top: 0% !important; left: -50% !important; }
+      .proc-halo-r { width: 160% !important; height: 50% !important; bottom: 0% !important; right: -40% !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-nav"></div>
+
+  <!-- ════════════════════════════════════════ HERO ═══════ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <!-- Kitchen elevation illustration -->
+    <div class="hero-sketch-wrap" aria-hidden="true" style="position:absolute;top:6rem;left:0;width:100%;z-index:2;pointer-events:none;
+      -webkit-mask-image:linear-gradient(to bottom,black 0%,black 58%,rgba(0,0,0,0.4) 78%,transparent 94%);
+      mask-image:linear-gradient(to bottom,black 0%,black 58%,rgba(0,0,0,0.4) 78%,transparent 94%);
+      opacity:0;animation:sketchAppear 2.8s ease-in-out 0.1s forwards;will-change:transform,filter,opacity;">
+      <img class="hero-sketch-img" src="brand_assets/kitchen_elevation.svg" style="width:100%;display:block;opacity:0.28;" />
+    </div>
+
+    <div style="position:relative;z-index:10;width:100%;max-width:1440px;margin:0 auto;padding:0 3rem;">
+      <div style="max-width:660px;">
+        <p class="label fu fu1" style="color:var(--accent);">Custom Cabinetry &amp; Design</p>
+        <h1 class="fu fu2" style="font-size:clamp(3rem,6.5vw,5.75rem);font-weight:300;color:#fff;line-height:1.08;letter-spacing:-0.035em;margin-bottom:1.5rem;">
+          Where Precision<br /><em style="color:var(--accent);font-style:italic;">Meets</em> Beauty
+        </h1>
+        <p class="fu fu3" style="font-size:1.0625rem;color:rgba(255,255,255,0.6);line-height:1.75;font-weight:300;max-width:440px;margin-bottom:2.5rem;">
+          Handcrafted cabinetry tailored to your space, your style, and the way you live. From kitchens to offices — we build environments that endure.
+        </p>
+        <div class="fu fu4" style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#work"    class="btn-gold">View Our Work</a>
+          <a href="contact.html" class="btn-ghost">Free Consultation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <div id="scroll-cue" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0;z-index:90;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(196,168,130,0.75)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(196,168,130,0.35)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-top:-10px;"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SERVICES ════════ -->
+  <section id="services" style="padding:9rem 3rem;background:var(--light);">
+    <div style="max-width:1440px;margin:0 auto;">
+
+      <div class="mob-stack" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:5rem;">
+        <div class="reveal">
+          <p class="label">What We Offer</p>
+          <h2 style="font-size:clamp(2.5rem,4vw,3.875rem);font-weight:300;line-height:1.1;letter-spacing:-0.035em;color:var(--dark);">
+            Crafted for Every<br /><em>Space in Your Home</em>
+          </h2>
+        </div>
+        <div class="reveal" style="padding-top:1.25rem;">
+          <p style="font-size:1.0625rem;color:var(--warm-mid);line-height:1.78;font-weight:300;">
+            From concept to installation, CabinetZone delivers bespoke cabinetry with exceptional craftsmanship. Every piece is designed around your unique vision and built to last a lifetime.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;">
+
+        <div class="svc-card reveal">
+          <div style="width:44px;height:44px;margin-bottom:0.875rem;color:var(--accent);">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="4" y="16" width="40" height="28" rx="1"/>
+              <path d="M4 28h40M24 28v16M13 22h5M30 22h5"/>
+              <rect x="8" y="4" width="32" height="12" rx="1"/>
+            </svg>
+          </div>
+          <h3 style="font-size:1.375rem;font-weight:400;margin-bottom:0.75rem;color:var(--dark);">Kitchen Cabinetry</h3>
+          <p style="font-size:0.9375rem;color:var(--warm-mid);line-height:1.72;font-weight:300;">Transform your kitchen into a masterpiece. Custom layouts, premium finishes, and intelligent storage solutions designed around your culinary life.</p>
+          <a href="service-kitchen.html" class="svc-arrow">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <!-- Kitchen elevation sketch -->
+          <svg class="svc-sketch" viewBox="0 0 152 108" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="146" y2="6"/>
+            <line x1="6" y1="6" x2="6" y2="102"/>
+            <line x1="146" y1="6" x2="146" y2="102"/>
+            <line x1="6" y1="102" x2="146" y2="102"/>
+            <rect x="6" y="6" width="140" height="5"/>
+            <path d="M57 11 L95 11 L90 38 L62 38 Z"/>
+            <line x1="72" y1="6" x2="72" y2="11"/>
+            <line x1="80" y1="6" x2="80" y2="11"/>
+            <rect x="6" y="11" width="51" height="27"/>
+            <line x1="31" y1="11" x2="31" y2="38"/>
+            <line x1="9" y1="24" x2="28" y2="24" stroke-width="0.4"/>
+            <line x1="34" y1="24" x2="54" y2="24" stroke-width="0.4"/>
+            <rect x="95" y="11" width="51" height="27"/>
+            <line x1="120" y1="11" x2="120" y2="38"/>
+            <line x1="98" y1="24" x2="117" y2="24" stroke-width="0.4"/>
+            <line x1="123" y1="24" x2="143" y2="24" stroke-width="0.4"/>
+            <rect x="62" y="38" width="28" height="22"/>
+            <rect x="65" y="41" width="22" height="16"/>
+            <line x1="76" y1="41" x2="76" y2="57"/>
+            <line x1="72" y1="34" x2="72" y2="38"/>
+            <line x1="80" y1="34" x2="80" y2="38"/>
+            <path d="M69 33 Q76 30 83 33"/>
+            <rect x="6" y="60" width="140" height="4"/>
+            <rect x="6" y="64" width="140" height="38"/>
+            <line x1="52" y1="64" x2="52" y2="102"/>
+            <line x1="100" y1="64" x2="100" y2="102"/>
+            <line x1="49" y1="82" x2="49" y2="87"/>
+            <line x1="97" y1="82" x2="97" y2="87"/>
+            <line x1="143" y1="82" x2="143" y2="87"/>
+          </svg>
+        </div>
+
+        <div class="svc-card reveal" style="transition-delay:0.1s;">
+          <div style="width:44px;height:44px;margin-bottom:0.875rem;color:var(--accent);">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="6" y="20" width="36" height="22" rx="1"/>
+              <path d="M6 30h36M14 30v12M34 30v12"/>
+              <rect x="10" y="6" width="28" height="14" rx="1"/>
+              <circle cx="24" cy="13" r="2.5"/>
+            </svg>
+          </div>
+          <h3 style="font-size:1.375rem;font-weight:400;margin-bottom:0.75rem;color:var(--dark);">Bathroom Vanities</h3>
+          <p style="font-size:0.9375rem;color:var(--warm-mid);line-height:1.72;font-weight:300;">Spa-inspired vanities combining form and function. Elegant designs with smart storage, built to elevate your daily ritual.</p>
+          <a href="service-bathroom.html" class="svc-arrow">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <!-- Bathroom elevation sketch -->
+          <svg class="svc-sketch" viewBox="0 0 130 108" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="8" y1="6" x2="122" y2="6"/>
+            <line x1="8" y1="102" x2="122" y2="102"/>
+            <line x1="8" y1="6" x2="8" y2="102"/>
+            <line x1="122" y1="6" x2="122" y2="102"/>
+            <rect x="28" y="14" width="74" height="44"/>
+            <line x1="96" y1="18" x2="100" y2="22" stroke-width="0.4"/>
+            <rect x="20" y="62" width="90" height="6"/>
+            <rect x="46" y="63" width="38" height="5"/>
+            <line x1="65" y1="63" x2="65" y2="68"/>
+            <line x1="62" y1="58" x2="62" y2="62"/>
+            <line x1="68" y1="58" x2="68" y2="62"/>
+            <path d="M59 57 Q65 54 71 57"/>
+            <rect x="20" y="68" width="90" height="30"/>
+            <line x1="65" y1="68" x2="65" y2="98"/>
+            <line x1="62" y1="83" x2="62" y2="87"/>
+            <line x1="68" y1="83" x2="68" y2="87"/>
+          </svg>
+        </div>
+
+        <div class="svc-card reveal" style="transition-delay:0.2s;">
+          <div style="width:44px;height:44px;margin-bottom:0.875rem;color:var(--accent);">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="4" y="4" width="40" height="40" rx="1"/>
+              <path d="M4 20h40M4 32h40M20 4v40M20 20h-8v12h8"/>
+            </svg>
+          </div>
+          <h3 style="font-size:1.375rem;font-weight:400;margin-bottom:0.75rem;color:var(--dark);">Custom Built-Ins</h3>
+          <p style="font-size:0.9375rem;color:var(--warm-mid);line-height:1.72;font-weight:300;">Seamlessly integrated shelving, entertainment centres, and home libraries that look as though they were always part of your space.</p>
+          <a href="service-builtins.html" class="svc-arrow">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <!-- Library wall sketch -->
+          <svg class="svc-sketch" viewBox="0 0 152 108" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="146" y2="6"/>
+            <line x1="6" y1="6" x2="6" y2="102"/>
+            <line x1="146" y1="6" x2="146" y2="102"/>
+            <line x1="6" y1="102" x2="146" y2="102"/>
+            <rect x="6" y="6" width="140" height="5"/>
+            <rect x="6" y="97" width="140" height="5"/>
+            <line x1="52" y1="11" x2="52" y2="97"/>
+            <line x1="100" y1="11" x2="100" y2="97"/>
+            <line x1="6" y1="34" x2="52" y2="34"/>
+            <line x1="6" y1="56" x2="52" y2="56"/>
+            <line x1="6" y1="77" x2="52" y2="77"/>
+            <line x1="52" y1="44" x2="100" y2="44"/>
+            <line x1="52" y1="77" x2="100" y2="77"/>
+            <line x1="100" y1="34" x2="146" y2="34"/>
+            <line x1="100" y1="56" x2="146" y2="56"/>
+            <line x1="100" y1="77" x2="146" y2="77"/>
+            <rect x="10" y="13" width="4" height="20" stroke-width="0.5"/>
+            <rect x="15" y="16" width="3" height="17" stroke-width="0.5"/>
+            <rect x="19" y="12" width="5" height="21" stroke-width="0.5"/>
+            <rect x="25" y="15" width="4" height="18" stroke-width="0.5"/>
+            <rect x="10" y="59" width="5" height="17" stroke-width="0.5"/>
+            <rect x="16" y="61" width="3" height="15" stroke-width="0.5"/>
+            <rect x="20" y="57" width="5" height="19" stroke-width="0.5"/>
+            <rect x="104" y="13" width="4" height="20" stroke-width="0.5"/>
+            <rect x="109" y="16" width="3" height="17" stroke-width="0.5"/>
+            <rect x="113" y="12" width="5" height="21" stroke-width="0.5"/>
+            <rect x="119" y="15" width="4" height="18" stroke-width="0.5"/>
+            <rect x="104" y="59" width="5" height="17" stroke-width="0.5"/>
+            <rect x="110" y="61" width="4" height="15" stroke-width="0.5"/>
+            <rect x="115" y="57" width="5" height="19" stroke-width="0.5"/>
+            <path d="M64 52 Q76 40 88 52 L86 77 L66 77 Z" stroke-width="0.5"/>
+            <line x1="29" y1="77" x2="29" y2="97"/>
+            <line x1="74" y1="77" x2="74" y2="97"/>
+            <line x1="122" y1="77" x2="122" y2="97"/>
+            <circle cx="25" cy="87" r="1.2" fill="currentColor" stroke="none"/>
+            <circle cx="33" cy="87" r="1.2" fill="currentColor" stroke="none"/>
+            <circle cx="70" cy="87" r="1.2" fill="currentColor" stroke="none"/>
+            <circle cx="78" cy="87" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+
+        <div class="svc-card reveal" style="transition-delay:0.3s;">
+          <div style="width:44px;height:44px;margin-bottom:0.875rem;color:var(--accent);">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="6" y="8" width="36" height="36" rx="1"/>
+              <line x1="24" y1="8" x2="24" y2="44"/>
+              <line x1="6" y1="16" x2="24" y2="16"/>
+              <line x1="24" y1="16" x2="42" y2="16"/>
+              <circle cx="21" cy="28" r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="27" cy="28" r="1.5" fill="currentColor" stroke="none"/>
+              <path d="M10 20v4M38 20v4"/>
+            </svg>
+          </div>
+          <h3 style="font-size:1.375rem;font-weight:400;margin-bottom:0.75rem;color:var(--dark);">Robes &amp; Storage</h3>
+          <p style="font-size:0.9375rem;color:var(--warm-mid);line-height:1.72;font-weight:300;">Custom walk-in robes, wardrobes, and clever storage solutions designed to maximise every centimetre of your space beautifully.</p>
+          <a href="service-robes.html" class="svc-arrow">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <!-- Walk-in robe elevation sketch -->
+          <svg class="svc-sketch" viewBox="0 0 152 108" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="146" y2="6"/>
+            <line x1="6" y1="6" x2="6" y2="102"/>
+            <line x1="146" y1="6" x2="146" y2="102"/>
+            <line x1="6" y1="102" x2="146" y2="102"/>
+            <rect x="6" y="6" width="140" height="5"/>
+            <line x1="52" y1="11" x2="52" y2="102"/>
+            <line x1="100" y1="11" x2="100" y2="102"/>
+            <line x1="10" y1="22" x2="48" y2="22"/>
+            <line x1="10" y1="17" x2="48" y2="17"/>
+            <line x1="15" y1="22" x2="15" y2="68" stroke-width="0.5"/>
+            <line x1="21" y1="22" x2="21" y2="64" stroke-width="0.5"/>
+            <line x1="27" y1="22" x2="27" y2="70" stroke-width="0.5"/>
+            <line x1="33" y1="22" x2="33" y2="65" stroke-width="0.5"/>
+            <line x1="39" y1="22" x2="39" y2="68" stroke-width="0.5"/>
+            <line x1="10" y1="80" x2="48" y2="80"/>
+            <line x1="10" y1="90" x2="48" y2="90"/>
+            <line x1="56" y1="17" x2="96" y2="17"/>
+            <line x1="56" y1="33" x2="96" y2="33"/>
+            <line x1="56" y1="49" x2="96" y2="49"/>
+            <line x1="56" y1="65" x2="96" y2="65"/>
+            <line x1="56" y1="78" x2="96" y2="78"/>
+            <line x1="56" y1="88" x2="96" y2="88"/>
+            <line x1="68" y1="72" x2="76" y2="72"/>
+            <line x1="68" y1="82" x2="76" y2="82"/>
+            <line x1="68" y1="92" x2="76" y2="92"/>
+            <line x1="104" y1="22" x2="142" y2="22"/>
+            <line x1="104" y1="17" x2="142" y2="17"/>
+            <line x1="109" y1="22" x2="109" y2="68" stroke-width="0.5"/>
+            <line x1="115" y1="22" x2="115" y2="64" stroke-width="0.5"/>
+            <line x1="121" y1="22" x2="121" y2="70" stroke-width="0.5"/>
+            <line x1="127" y1="22" x2="127" y2="65" stroke-width="0.5"/>
+            <line x1="133" y1="22" x2="133" y2="68" stroke-width="0.5"/>
+            <line x1="104" y1="80" x2="142" y2="80"/>
+            <line x1="104" y1="90" x2="142" y2="90"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════ PORTFOLIO ════════ -->
+  <section id="work" style="padding:9rem 3rem;background:var(--dark);">
+    <div style="max-width:1440px;margin:0 auto;">
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;flex-wrap:wrap;gap:2rem;">
+        <div class="reveal">
+          <p class="label">Our Work</p>
+          <h2 style="font-size:clamp(2.5rem,4vw,3.875rem);font-weight:300;line-height:1.1;letter-spacing:-0.035em;color:#fff;">
+            Projects That<br /><em style="color:var(--accent);">Speak for Themselves</em>
+          </h2>
+        </div>
+        <a href="contact.html" class="btn-gold reveal" style="flex-shrink:0;">Start Your Project</a>
+      </div>
+
+      <!-- 3-column square grid — populated from projects-data.js -->
+      <div id="hz-grid" class="mob-stack" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;"></div>
+
+      <!-- Explore all -->
+      <div class="reveal" style="text-align:center;margin-top:3.5rem;">
+        <a href="projects.html" class="btn-ghost" style="display:inline-flex;align-items:center;gap:0.625rem;">
+          Explore All Projects
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ ABOUT ═══════════ -->
+  <section id="about" style="padding:9rem 3rem;background:var(--light);">
+    <div class="mob-stack" style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center;">
+
+      <div class="reveal" style="position:relative;">
+        <img src="https://images.unsplash.com/photo-1659930087003-2d64e33181f7?w=900&h=1100&fit=crop&q=85&auto=format" alt="Our Workshop" style="width:100%;display:block;" />
+      </div>
+
+      <div class="reveal">
+        <p class="label">Our Philosophy</p>
+        <h2 style="font-size:clamp(2rem,3.5vw,3.25rem);font-weight:300;line-height:1.15;letter-spacing:-0.03em;color:var(--dark);margin-bottom:1.5rem;">
+          Built with Intention.<br /><em>Finished with Pride.</em>
+        </h2>
+        <p style="font-size:1.0625rem;color:var(--warm-mid);line-height:1.78;font-weight:300;margin-bottom:1.25rem;">
+          At CabinetZone, we believe great cabinetry is more than storage — it's architecture. Every joint, every finish, every detail is considered with the same care and precision.
+        </p>
+        <p style="font-size:1.0625rem;color:var(--warm-mid);line-height:1.78;font-weight:300;margin-bottom:2.5rem;">
+          We collaborate closely with homeowners, designers, and builders to bring exceptional spaces to life — on time, on budget, and beyond expectation.
+        </p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2.75rem;">
+          <div style="padding:1.25rem;background:#fff;border:1px solid rgba(196,168,130,0.14);">
+            <h4 style="font-size:1.375rem;font-weight:400;color:var(--dark);margin-bottom:0.4rem;">Premium Materials</h4>
+            <p style="font-size:0.875rem;color:var(--warm-mid);line-height:1.65;font-weight:300;">Sustainably sourced hardwoods and precision-engineered hardware.</p>
+          </div>
+          <div style="padding:1.25rem;background:#fff;border:1px solid rgba(196,168,130,0.14);">
+            <h4 style="font-size:1.375rem;font-weight:400;color:var(--dark);margin-bottom:0.4rem;">Expert Installation</h4>
+            <p style="font-size:0.875rem;color:var(--warm-mid);line-height:1.65;font-weight:300;">Certified installers who treat your home with the utmost care.</p>
+          </div>
+          <div style="padding:1.25rem;background:#fff;border:1px solid rgba(196,168,130,0.14);">
+            <h4 style="font-size:1.375rem;font-weight:400;color:var(--dark);margin-bottom:0.4rem;">Lifetime Warranty</h4>
+            <p style="font-size:0.875rem;color:var(--warm-mid);line-height:1.65;font-weight:300;">We stand behind our work with a comprehensive structural warranty.</p>
+          </div>
+          <div style="padding:1.25rem;background:#fff;border:1px solid rgba(196,168,130,0.14);">
+            <h4 style="font-size:1.375rem;font-weight:400;color:var(--dark);margin-bottom:0.4rem;">3D Design Preview</h4>
+            <p style="font-size:0.875rem;color:var(--warm-mid);line-height:1.65;font-weight:300;">See your finished space before a single piece of wood is cut.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ PROCESS ═════════ -->
+  <section id="process" style="padding:9rem 3rem;background:var(--dark);position:relative;overflow:hidden;">
+
+    <!-- Decorative background layer -->
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
+      <!-- Amber radial halos -->
+      <div class="proc-halo-l" style="position:absolute;top:-30%;left:-12%;width:72%;height:150%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(196,168,130,0.13) 0%,transparent 60%);"></div>
+      <div class="proc-halo-r" style="position:absolute;bottom:-25%;right:-8%;width:55%;height:110%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(196,168,130,0.07) 0%,transparent 60%);"></div>
+      <!-- Dot grid texture -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="proc-dots" x="0" y="0" width="38" height="38" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.1" fill="rgba(196,168,130,0.28)"/></pattern></defs>
+        <rect width="100%" height="100%" fill="url(#proc-dots)"/>
+      </svg>
+      <!-- Architectural kitchen floor plan watermark -->
+      <svg class="proc-floorplan" viewBox="0 0 820 500" fill="none" stroke="rgba(196,168,130,0.9)" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;opacity:0.08;">
+        <!-- Outer room boundary -->
+        <rect x="40" y="28" width="740" height="444" stroke-width="2.5"/>
+        <!-- Top wall cabinets -->
+        <rect x="40" y="28" width="740" height="74" stroke-width="1.2"/>
+        <line x1="165" y1="28" x2="165" y2="102" stroke-width="0.9"/>
+        <line x1="290" y1="28" x2="290" y2="102" stroke-width="0.9"/>
+        <line x1="415" y1="28" x2="415" y2="102" stroke-width="0.9"/>
+        <line x1="540" y1="28" x2="540" y2="102" stroke-width="0.9"/>
+        <line x1="660" y1="28" x2="660" y2="102" stroke-width="0.9"/>
+        <path d="M95 65 Q102.5 73 110 65" stroke-width="1.1"/>
+        <path d="M220 65 Q227.5 73 235 65" stroke-width="1.1"/>
+        <path d="M345 65 Q352.5 73 360 65" stroke-width="1.1"/>
+        <path d="M470 65 Q477.5 73 485 65" stroke-width="1.1"/>
+        <path d="M590 65 Q597.5 73 605 65" stroke-width="1.1"/>
+        <path d="M707 65 Q714.5 73 722 65" stroke-width="1.1"/>
+        <!-- Left wall cabinets -->
+        <rect x="40" y="102" width="74" height="310" stroke-width="1.2"/>
+        <line x1="40" y1="204" x2="114" y2="204" stroke-width="0.9"/>
+        <line x1="40" y1="308" x2="114" y2="308" stroke-width="0.9"/>
+        <line x1="96" y1="150" x2="96" y2="162" stroke-width="1.1"/>
+        <line x1="96" y1="252" x2="96" y2="264" stroke-width="1.1"/>
+        <line x1="96" y1="354" x2="96" y2="366" stroke-width="1.1"/>
+        <!-- Right wall cabinets -->
+        <rect x="706" y="102" width="74" height="310" stroke-width="1.2"/>
+        <line x1="706" y1="204" x2="780" y2="204" stroke-width="0.9"/>
+        <line x1="706" y1="308" x2="780" y2="308" stroke-width="0.9"/>
+        <line x1="724" y1="150" x2="724" y2="162" stroke-width="1.1"/>
+        <line x1="724" y1="252" x2="724" y2="264" stroke-width="1.1"/>
+        <line x1="724" y1="354" x2="724" y2="366" stroke-width="1.1"/>
+        <!-- Kitchen island -->
+        <rect x="218" y="192" width="384" height="138" rx="4" stroke-width="1.8"/>
+        <line x1="218" y1="261" x2="602" y2="261" stroke-width="0.7" stroke-dasharray="6,4"/>
+        <!-- Sink -->
+        <rect x="246" y="208" width="70" height="50" rx="3" stroke-width="1.2"/>
+        <ellipse cx="281" cy="233" rx="25" ry="19" stroke-width="1"/>
+        <line x1="281" y1="208" x2="281" y2="197" stroke-width="1.2"/>
+        <path d="M275 197 Q281 191 287 197" stroke-width="1.2"/>
+        <!-- Cooktop -->
+        <rect x="478" y="204" width="100" height="72" rx="3" stroke-width="1.2"/>
+        <ellipse cx="500" cy="225" rx="11" ry="11" stroke-width="1"/>
+        <ellipse cx="534" cy="225" rx="11" ry="11" stroke-width="1"/>
+        <ellipse cx="500" cy="258" rx="11" ry="11" stroke-width="1"/>
+        <ellipse cx="534" cy="258" rx="11" ry="11" stroke-width="1"/>
+        <ellipse cx="500" cy="225" rx="6" ry="6" stroke-width="0.6"/>
+        <ellipse cx="534" cy="225" rx="6" ry="6" stroke-width="0.6"/>
+        <ellipse cx="500" cy="258" rx="6" ry="6" stroke-width="0.6"/>
+        <ellipse cx="534" cy="258" rx="6" ry="6" stroke-width="0.6"/>
+        <!-- Bottom cabinets (with entrance gap x=362 to x=458) -->
+        <rect x="114" y="398" width="248" height="74" stroke-width="1.2"/>
+        <line x1="238" y1="398" x2="238" y2="472" stroke-width="0.9"/>
+        <rect x="458" y="398" width="248" height="74" stroke-width="1.2"/>
+        <line x1="582" y1="398" x2="582" y2="472" stroke-width="0.9"/>
+        <path d="M170 435 Q181.5 443 193 435" stroke-width="1.1"/>
+        <path d="M286 435 Q297.5 443 309 435" stroke-width="1.1"/>
+        <path d="M494 435 Q505.5 443 517 435" stroke-width="1.1"/>
+        <path d="M614 435 Q625.5 443 637 435" stroke-width="1.1"/>
+        <!-- Entrance door swing -->
+        <line x1="362" y1="472" x2="362" y2="376" stroke-width="0.9"/>
+        <path d="M 362 376 A 96 96 0 0 1 458 472" stroke-width="0.8" stroke-dasharray="5,3"/>
+        <!-- Dimension lines -->
+        <line x1="40" y1="492" x2="780" y2="492" stroke-width="0.7"/>
+        <line x1="40" y1="486" x2="40" y2="498" stroke-width="0.9"/>
+        <line x1="780" y1="486" x2="780" y2="498" stroke-width="0.9"/>
+        <line x1="800" y1="28" x2="800" y2="472" stroke-width="0.7"/>
+        <line x1="794" y1="28" x2="806" y2="28" stroke-width="0.9"/>
+        <line x1="794" y1="472" x2="806" y2="472" stroke-width="0.9"/>
+        <!-- Corner crosshair marks -->
+        <line x1="30" y1="28" x2="50" y2="28" stroke-width="0.6" stroke-dasharray="2,2"/>
+        <line x1="40" y1="18" x2="40" y2="38" stroke-width="0.6" stroke-dasharray="2,2"/>
+        <line x1="770" y1="28" x2="790" y2="28" stroke-width="0.6" stroke-dasharray="2,2"/>
+        <line x1="780" y1="18" x2="780" y2="38" stroke-width="0.6" stroke-dasharray="2,2"/>
+      </svg>
+    </div>
+
+    <div style="max-width:1440px;margin:0 auto;position:relative;z-index:1;">
+      <div style="text-align:center;margin-bottom:5rem;" class="reveal">
+        <p class="label" style="justify-content:center;">How We Work</p>
+        <h2 style="font-size:clamp(2.5rem,4vw,3.875rem);font-weight:300;line-height:1.1;letter-spacing:-0.035em;color:#fff;">
+          From Vision to <em style="color:var(--accent);">Reality</em>
+        </h2>
+      </div>
+
+      <div class="mob-2col mob-process" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;">
+        <div style="position:absolute;top:1.375rem;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,rgba(196,168,130,0.18),transparent);pointer-events:none;"></div>
+
+        <div class="reveal" style="padding:0 2.25rem 2rem;text-align:center;">
+          <div style="width:46px;height:46px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-family:'Cormorant Garamond',serif;font-size:1.375rem;font-weight:300;color:var(--accent);">01</div>
+          <h3 style="font-size:1.375rem;font-weight:400;color:#fff;margin-bottom:0.75rem;">Consultation</h3>
+          <p style="font-size:0.9rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">A deep conversation about your space, lifestyle, and aesthetic vision. No templates — only your story.</p>
+        </div>
+
+        <div class="reveal" style="padding:0 2.25rem 2rem;text-align:center;transition-delay:0.12s;">
+          <div style="width:46px;height:46px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-family:'Cormorant Garamond',serif;font-size:1.375rem;font-weight:300;color:var(--accent);">02</div>
+          <h3 style="font-size:1.375rem;font-weight:400;color:#fff;margin-bottom:0.75rem;">Design</h3>
+          <p style="font-size:0.9rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Detailed 3D renderings and material samples so you can visualize your space before production begins.</p>
+        </div>
+
+        <div class="reveal" style="padding:0 2.25rem 2rem;text-align:center;transition-delay:0.24s;">
+          <div style="width:46px;height:46px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-family:'Cormorant Garamond',serif;font-size:1.375rem;font-weight:300;color:var(--accent);">03</div>
+          <h3 style="font-size:1.375rem;font-weight:400;color:#fff;margin-bottom:0.75rem;">Crafting</h3>
+          <p style="font-size:0.9rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Built by hand in our workshop using precision tools, premium materials, and decades of craft knowledge.</p>
+        </div>
+
+        <div class="reveal" style="padding:0 2.25rem 2rem;text-align:center;transition-delay:0.36s;">
+          <div style="width:46px;height:46px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-family:'Cormorant Garamond',serif;font-size:1.375rem;font-weight:300;color:var(--accent);">04</div>
+          <h3 style="font-size:1.375rem;font-weight:400;color:#fff;margin-bottom:0.75rem;">Installation</h3>
+          <p style="font-size:0.9rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Expert installers fit every piece with surgical precision, leaving your space spotless and ready to enjoy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════ CONTACT ════════ -->
+  <section id="contact" style="padding:9rem 3rem;background:var(--light);">
+    <div style="max-width:860px;margin:0 auto;text-align:center;" class="reveal">
+      <p class="label" style="justify-content:center;">Get in Touch</p>
+      <h2 style="font-size:clamp(2.5rem,4vw,3.875rem);font-weight:300;line-height:1.1;letter-spacing:-0.035em;color:var(--dark);margin-bottom:1.5rem;">
+        Let's Build Something<br /><em style="color:var(--accent);">Exceptional Together</em>
+      </h2>
+      <p style="font-size:1.0625rem;color:var(--warm-mid);line-height:1.78;font-weight:300;margin-bottom:3.5rem;max-width:560px;margin-left:auto;margin-right:auto;">
+        We'd love to hear about your project. Call us, send an email, or visit our showroom in Laverton North.
+      </p>
+      <div class="mob-stack" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-bottom:3rem;">
+        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+          <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 7.18 2 2 0 015 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 12a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0122 19.5v-.58z"/></svg>
+          </div>
+          <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Phone</p>
+          <a href="tel:+61495000365" style="color:var(--dark);font-size:1rem;text-decoration:none;font-weight:400;transition:color 0.2s ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dark)'">0495 000 365</a>
+        </div>
+        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+          <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Email</p>
+          <a href="mailto:info@cabinetzone.com.au" style="color:var(--dark);font-size:1rem;text-decoration:none;font-weight:400;transition:color 0.2s ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dark)'">info@cabinetzone.com.au</a>
+        </div>
+        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+          <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Showroom</p>
+          <p style="color:var(--dark);font-size:1rem;font-weight:400;line-height:1.55;">55A Patch Circuit<br/>Laverton North VIC 3026</p>
+        </div>
+      </div>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:gap 0.25s ease;" onmouseover="this.style.gap='0.95rem'" onmouseout="this.style.gap='0.6rem'">
+        Visit Our Showroom &amp; Get Directions
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // ── Scroll cue — hide once user starts scrolling
+    (function () {
+      const cue = document.getElementById('scroll-cue');
+      function updateCue() {
+        const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 24;
+        cue.classList.toggle('hidden', atBottom);
+      }
+      window.addEventListener('scroll', updateCue, { passive: true });
+    })();
+
+    // ── Hero subtle zoom
+    window.addEventListener('load', () => {
+      document.getElementById('hero-bg').classList.add('ready');
+    });
+
+    // ── Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id === '#') return;
+        const t = document.querySelector(id);
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+
+  </script>
+  <script src="/site.js"></script>
+
+  <!-- ══════════════════════════════════ LIGHTBOX ════════ -->
+  <div id="hz-lightbox" role="dialog" aria-modal="true" aria-label="Project photo viewer">
+    <div class="hz-lb-bar">
+      <div>
+        <p id="hz-lb-cat" style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem;"></p>
+        <h2 id="hz-lb-title" style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#fff;line-height:1.2;"></h2>
+      </div>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <span id="hz-lb-count" style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(255,255,255,0.32);"></span>
+        <button class="hz-lb-close" id="hz-lb-close" aria-label="Close viewer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="hz-lb-stage">
+      <img id="hz-lb-img" src="" alt="" />
+      <button class="hz-lb-nav" id="hz-lb-prev" aria-label="Previous photo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="hz-lb-nav" id="hz-lb-next" aria-label="Next photo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="hz-lb-strip" id="hz-lb-strip"></div>
+  </div>
+
+  <script src="/projects-data.js"></script>
+  <script>
+    // ── Home-page lightbox — data sourced from projects-data.js
+    const hzProjects = PROJECTS;
+
+    // ── Build portfolio grid tiles from PROJECTS
+    (function () {
+      const delays = ['', 'transition-delay:0.1s;', 'transition-delay:0.2s;'];
+      const hzGrid = document.getElementById('hz-grid');
+      PROJECTS.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'port-item reveal';
+        card.dataset.project = p.id;
+        card.setAttribute('style', `aspect-ratio:1/1;cursor:pointer;${delays[i] || ''}`);
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `View ${p.title}`);
+        card.innerHTML = `
+          <img src="${p.cover}" alt="${p.title}" loading="lazy" />
+          <div class="port-overlay">
+            <div class="port-info">
+              <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:400;color:#fff;line-height:1.2;">${p.title}</h3>
+            </div>
+          </div>`;
+        hzGrid.appendChild(card);
+      });
+    })();
+
+    let hzCur = null, hzIdx = 0;
+
+    function hzOpen(projectId) {
+      hzCur = hzProjects.find(p => p.id === projectId);
+      hzIdx = 0;
+      document.getElementById('hz-lb-cat').textContent   = hzCur.label;
+      document.getElementById('hz-lb-title').textContent = hzCur.title;
+      hzSync();
+      document.getElementById('hz-lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hzSync() {
+      const photo = hzCur.photos[hzIdx];
+      document.getElementById('hz-lb-img').src = photo.src;
+      document.getElementById('hz-lb-img').alt = hzCur.title + ' — ' + photo.cap;
+      document.getElementById('hz-lb-count').textContent = (hzIdx + 1) + ' of ' + hzCur.photos.length;
+      document.getElementById('hz-lb-prev').classList.toggle('dim', hzIdx === 0);
+      document.getElementById('hz-lb-next').classList.toggle('dim', hzIdx === hzCur.photos.length - 1);
+      const strip = document.getElementById('hz-lb-strip');
+      strip.innerHTML = hzCur.photos.map((ph, i) =>
+        `<img class="hz-lb-thumb${i === hzIdx ? ' active' : ''}" src="${ph.src}" alt="${ph.cap}" data-i="${i}" loading="lazy" />`
+      ).join('');
+      strip.querySelectorAll('.hz-lb-thumb').forEach(t =>
+        t.addEventListener('click', () => { hzIdx = +t.dataset.i; hzSync(); })
+      );
+    }
+
+    function hzClose() {
+      document.getElementById('hz-lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+      hzCur = null;
+    }
+
+    document.getElementById('hz-lb-close').addEventListener('click', hzClose);
+    document.getElementById('hz-lb-prev').addEventListener('click', () => { if (hzIdx > 0) { hzIdx--; hzSync(); } });
+    document.getElementById('hz-lb-next').addEventListener('click', () => { if (hzCur && hzIdx < hzCur.photos.length - 1) { hzIdx++; hzSync(); } });
+    document.addEventListener('keydown', e => {
+      if (!hzCur) return;
+      if (e.key === 'ArrowLeft'  && hzIdx > 0)                          { hzIdx--; hzSync(); }
+      if (e.key === 'ArrowRight' && hzIdx < hzCur.photos.length - 1)   { hzIdx++; hzSync(); }
+      if (e.key === 'Escape') hzClose();
+    });
+
+    // Wire portfolio cards
+    document.querySelectorAll('.port-item[data-project]').forEach(card => {
+      card.addEventListener('click', e => { e.preventDefault(); hzOpen(+card.dataset.project); });
+    });
+  </script>
+</body>
+</html>

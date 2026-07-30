@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & Visit — CabinetZone</title>
+  <link rel="icon" type="image/png" href="/brand_assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/site.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; overflow-x: hidden; }
+
+    .contact-hero {
+      position: relative; height: 52vh; min-height: 380px;
+      display: flex; align-items: flex-end; padding-bottom: 4.5rem; overflow: hidden;
+    }
+    .contact-hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(38,52,92,0.8) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 80%, rgba(22,30,58,0.7) 0%, transparent 50%),
+        linear-gradient(145deg, #0c1220 0%, #131d35 40%, #1a2540 70%, #0e1828 100%);
+    }
+    .contact-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,17,26,0.96) 0%, rgba(13,17,26,0.4) 60%, rgba(13,17,26,0.1) 100%);
+    }
+    .contact-hero-content {
+      position: relative; z-index: 1;
+      max-width: 1440px; margin: 0 auto; padding: 0 3rem; width: 100%;
+    }
+
+    .map-wrapper {
+      position: relative;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    .map-wrapper iframe {
+      width: 100%; height: 100%; border: 0; display: block;
+      filter: grayscale(30%) contrast(0.95) brightness(0.9);
+    }
+    .map-overlay-link {
+      position: absolute; inset: 0;
+      background: transparent;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .map-overlay-link:hover + .map-directions-badge,
+    .map-overlay-link:focus + .map-directions-badge {
+      opacity: 1; transform: translateY(0);
+    }
+    .map-directions-badge {
+      position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%) translateY(4px);
+      background: var(--dark); color: var(--accent);
+      border: 1px solid rgba(196,168,130,0.35);
+      padding: 0.6rem 1.25rem;
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0.85;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .info-card {
+      padding: 2rem;
+      background: var(--dark-2);
+      border: 1px solid rgba(196,168,130,0.1);
+    }
+
+    @media (max-width: 767px) {
+      .contact-hero { height: 42vh; padding-bottom: 3rem; }
+      .contact-hero-content { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      .contact-inner { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      .contact-grid { grid-template-columns: 1fr !important; }
+      .map-col { height: 320px !important; }
+      .info-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-nav"></div>
+
+  <!-- Hero -->
+  <div class="contact-hero">
+    <div class="contact-hero-bg"></div>
+    <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+    <div class="contact-hero-overlay"></div>
+    <div class="contact-hero-content">
+      <p class="label">Visit Us</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.75rem,5vw,4.5rem);font-weight:300;line-height:1.08;letter-spacing:-0.03em;color:#fff;max-width:640px;margin-top:0.5rem;">
+        Come and See Us<br/><em style="color:var(--accent);font-style:italic;">in Person</em>
+      </h1>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var canvas = document.getElementById('hero-canvas');
+    var ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function pick(arr)  { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    var TYPES = ['panel', 'drawer', 'shelf', 'frame', 'grid', 'hinge'];
+
+    function Shape(init) {
+      this.spawn = function (fromInit) {
+        this.type = pick(TYPES);
+
+        switch (this.type) {
+          case 'panel':  this.w = rand(55, 115); this.h = this.w * rand(1.2, 1.9); break;
+          case 'drawer': this.w = rand(80, 150); this.h = this.w * rand(0.22, 0.42); break;
+          case 'shelf':  this.w = rand(90, 170); this.h = rand(40, 75); break;
+          case 'frame':  this.w = rand(45, 105); this.h = rand(50, 140); break;
+          case 'grid':   this.w = rand(60, 110); this.h = this.w * rand(1.4, 2.4); break;
+          case 'hinge':  this.w = rand(16, 32);  this.h = this.w; break;
+        }
+
+        /* Try 8 candidate positions, keep the one furthest from all other shapes */
+        var bestX = rand(-this.w, canvas.width), bestY = fromInit ? rand(0, canvas.height) : canvas.height + this.h + 10;
+        var bestVx = rand(-0.35, 0.35), bestVy = -rand(0.22, 0.55), bestDist = -1;
+
+        for (var attempt = 0; attempt < 8; attempt++) {
+          var edge = Math.random(), tx, ty, tvx, tvy;
+          if (edge < 0.65) {
+            tx = rand(-this.w * 0.3, canvas.width + this.w * 0.3);
+            ty = fromInit ? rand(0, canvas.height) : canvas.height + this.h + 10;
+            tvx = rand(-0.35, 0.35); tvy = -rand(0.22, 0.55);
+          } else if (edge < 0.83) {
+            tx = fromInit ? rand(0, canvas.width) : -this.w - 10;
+            ty = rand(-this.h * 0.2, canvas.height);
+            tvx = rand(0.18, 0.4); tvy = rand(-0.3, 0.05);
+          } else {
+            tx = fromInit ? rand(0, canvas.width) : canvas.width + 10;
+            ty = rand(-this.h * 0.2, canvas.height);
+            tvx = -rand(0.18, 0.4); tvy = rand(-0.3, 0.05);
+          }
+          var minD = Infinity;
+          for (var si = 0; si < shapes.length; si++) {
+            if (shapes[si] === this) continue;
+            var dx = (shapes[si].x + shapes[si].w * 0.5) - (tx + this.w * 0.5);
+            var dy = (shapes[si].y + shapes[si].h * 0.5) - (ty + this.h * 0.5);
+            var d = dx * dx + dy * dy;
+            if (d < minD) minD = d;
+          }
+          if (minD > bestDist) { bestDist = minD; bestX = tx; bestY = ty; bestVx = tvx; bestVy = tvy; }
+        }
+        this.x = bestX; this.y = bestY; this.vx = bestVx; this.vy = bestVy;
+
+        this.rot  = rand(-0.3, 0.3);
+        this.drot = rand(-0.0008, 0.0008);
+        this.lw   = rand(0.7, 1.4);
+        this.alpha = fromInit ? rand(0.05, 0.32) : 0;
+        this.peak  = rand(0.18, 0.42);
+        this.shelves = (this.type === 'grid')  ? Math.floor(rand(2, 5))
+                     : (this.type === 'panel' && Math.random() < 0.5) ? Math.floor(rand(1, 3)) : 0;
+        this.divider = (this.type === 'panel' || this.type === 'frame') && Math.random() < 0.45;
+      };
+      this.spawn(init);
+
+      this.dead = function () {
+        return this.y < -this.h - 60 || this.x < -this.w - 60 || this.x > canvas.width + this.w + 60;
+      };
+
+      this.update = function () {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rot += this.drot;
+        if (this.alpha < this.peak) this.alpha = Math.min(this.alpha + 0.0025, this.peak);
+        if (this.dead()) this.spawn(false);
+      };
+
+      this.draw = function () {
+        ctx.save();
+        ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
+        ctx.rotate(this.rot);
+        ctx.translate(-this.w / 2, -this.h / 2);
+        ctx.strokeStyle = 'rgba(196,168,130,' + this.alpha + ')';
+        ctx.fillStyle   = 'rgba(196,168,130,' + (this.alpha * 0.9) + ')';
+        ctx.lineWidth   = this.lw;
+
+        switch (this.type) {
+
+          case 'panel': {
+            ctx.strokeRect(0, 0, this.w, this.h);
+            var mx = this.w * 0.13, my = this.h * 0.1;
+            ctx.strokeRect(mx, my, this.w - mx * 2, this.h - my * 2);
+            for (var i = 1; i <= this.shelves; i++) {
+              var sy = my + (this.h - my * 2) * (i / (this.shelves + 1));
+              ctx.beginPath(); ctx.moveTo(mx, sy); ctx.lineTo(this.w - mx, sy); ctx.stroke();
+            }
+            if (this.divider) {
+              ctx.beginPath(); ctx.moveTo(this.w/2, my); ctx.lineTo(this.w/2, this.h - my); ctx.stroke();
+            }
+            [[mx,my],[this.w-mx,my],[mx,this.h-my],[this.w-mx,this.h-my]].forEach(function(p) {
+              ctx.beginPath(); ctx.arc(p[0], p[1], 1.8, 0, Math.PI*2); ctx.fill();
+            });
+            break;
+          }
+
+          case 'drawer': {
+            ctx.strokeRect(0, 0, this.w, this.h);
+            var hx = this.w * 0.28, hy = this.h * 0.28, hw = this.w * 0.44, hh = this.h * 0.44;
+            ctx.strokeRect(hx, hy, hw, hh);
+            /* handle dot */
+            ctx.beginPath(); ctx.arc(this.w/2, this.h/2, 2, 0, Math.PI*2); ctx.fill();
+            break;
+          }
+
+          case 'shelf': {
+            /* horizontal board */
+            ctx.strokeRect(0, this.h * 0.3, this.w, this.h * 0.14);
+            /* two vertical uprights */
+            ctx.beginPath(); ctx.moveTo(this.w*0.1, 0); ctx.lineTo(this.w*0.1, this.h); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(this.w*0.9, 0); ctx.lineTo(this.w*0.9, this.h); ctx.stroke();
+            /* peg holes */
+            [0.25,0.75].forEach(function(px) {
+              [0.15,0.75].forEach(function(py) {
+                ctx.beginPath(); ctx.arc(px * this.w, py * this.h, 1.5, 0, Math.PI*2); ctx.fill();
+              }, this);
+            }, this);
+            break;
+          }
+
+          case 'frame': {
+            ctx.strokeRect(0, 0, this.w, this.h);
+            if (this.divider) {
+              ctx.beginPath(); ctx.moveTo(0, this.h/2); ctx.lineTo(this.w, this.h/2); ctx.stroke();
+            }
+            /* corner L-marks */
+            var cm = Math.min(this.w, this.h) * 0.16;
+            [ [0,0,1,0, 0,0,0,1], [this.w,0,-1,0, this.w,0,0,1],
+              [0,this.h,1,0, 0,this.h,0,-1], [this.w,this.h,-1,0, this.w,this.h,0,-1]
+            ].forEach(function(c) {
+              ctx.beginPath(); ctx.moveTo(c[0],c[1]); ctx.lineTo(c[0]+c[2]*cm, c[1]+c[3]*cm); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(c[4],c[5]); ctx.lineTo(c[4]+c[6]*cm, c[5]+c[7]*cm); ctx.stroke();
+            });
+            break;
+          }
+
+          case 'grid': {
+            ctx.strokeRect(0, 0, this.w, this.h);
+            ctx.beginPath(); ctx.moveTo(this.w/2, 0); ctx.lineTo(this.w/2, this.h); ctx.stroke();
+            for (var j = 1; j <= this.shelves; j++) {
+              var gy = this.h * (j / (this.shelves + 1));
+              ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(this.w, gy); ctx.stroke();
+            }
+            break;
+          }
+
+          case 'hinge': {
+            ctx.strokeRect(0, 0, this.w, this.h);
+            ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(this.w, this.h); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(this.w,0); ctx.lineTo(0, this.h); ctx.stroke();
+            ctx.beginPath(); ctx.arc(this.w/2, this.h/2, this.w*0.2, 0, Math.PI*2); ctx.stroke();
+            break;
+          }
+        }
+
+        ctx.restore();
+      };
+    }
+
+    var shapes = [];
+    for (var i = 0; i < 34; i++) shapes.push(new Shape(true));
+
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < shapes.length; i++) { shapes[i].update(); shapes[i].draw(); }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+  </script>
+
+  <!-- Map + Info -->
+  <section style="background:var(--light);">
+  <div class="contact-inner" style="padding:5.5rem 3rem 4.5rem;max-width:1440px;margin:0 auto;">
+
+    <!-- Map -->
+    <div class="contact-grid" style="display:grid;grid-template-columns:1.35fr 1fr;gap:4rem;align-items:stretch;">
+
+      <div class="map-col" style="height:100%;min-height:420px;position:relative;">
+        <div class="map-wrapper" style="height:100%;">
+          <a class="map-overlay-link"
+             href="https://www.google.com/maps/dir/?api=1&destination=55A+Patch+Circuit%2C+Laverton+North+VIC+3026+Australia"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Get directions to CabinetZone showroom"></a>
+          <iframe
+            src="https://maps.google.com/maps?q=55A+Patch+Circuit%2C+Laverton+North+VIC+3026+Australia&output=embed&z=15"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="CabinetZone showroom location"></iframe>
+        </div>
+      </div>
+
+      <!-- Address & contact details -->
+      <div style="display:flex;flex-direction:column;gap:0;padding-top:0.5rem;">
+
+        <p class="label">Our Showroom</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.875rem,3vw,2.75rem);font-weight:300;color:var(--dark);margin-bottom:2rem;letter-spacing:-0.02em;line-height:1.15;">
+          Laverton North, Victoria
+        </h2>
+
+        <!-- Address -->
+        <div style="display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem 0;border-top:1px solid rgba(196,168,130,0.2);">
+          <div style="width:40px;height:40px;border:1px solid rgba(196,168,130,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);margin-top:0.1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(45,40,37,0.45);margin-bottom:0.45rem;">Address</p>
+            <p style="color:var(--text);font-size:1rem;line-height:1.65;">55A Patch Circuit<br/>Laverton North VIC 3026</p>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=55A+Patch+Circuit%2C+Laverton+North+VIC+3026+Australia"
+               target="_blank" rel="noopener noreferrer"
+               style="display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.75rem;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:gap 0.2s ease;"
+               onmouseover="this.style.gap='0.65rem'" onmouseout="this.style.gap='0.4rem'">
+              Get Directions
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div style="display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem 0;border-top:1px solid rgba(196,168,130,0.2);">
+          <div style="width:40px;height:40px;border:1px solid rgba(196,168,130,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 7.18 2 2 0 015 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 12a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0122 19.5v-.58z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(45,40,37,0.45);margin-bottom:0.45rem;">Phone</p>
+            <a href="tel:+61495000365" style="color:var(--text);font-size:1rem;text-decoration:none;transition:color 0.2s ease;"
+               onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">0495 000 365</a>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div style="display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem 0;border-top:1px solid rgba(196,168,130,0.2);border-bottom:1px solid rgba(196,168,130,0.2);">
+          <div style="width:40px;height:40px;border:1px solid rgba(196,168,130,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(45,40,37,0.45);margin-bottom:0.45rem;">Email</p>
+            <a href="mailto:info@cabinetzone.com.au" style="color:var(--text);font-size:1rem;text-decoration:none;transition:color 0.2s ease;"
+               onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">info@cabinetzone.com.au</a>
+          </div>
+        </div>
+
+        <!-- Hours tiles -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:1.25rem;">
+
+          <div style="padding:0.75rem 0.875rem;background:var(--dark-2);border:1px solid rgba(196,168,130,0.1);">
+            <p style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;">Mon – Fri</p>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:var(--accent);line-height:1.1;margin-bottom:0.25rem;">8am – 5pm</p>
+          </div>
+
+          <div style="padding:0.75rem 0.875rem;background:var(--dark-2);border:1px solid rgba(196,168,130,0.1);">
+            <p style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;">Saturday</p>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:var(--accent);line-height:1.1;">9am – 4pm</p>
+          </div>
+
+          <div style="padding:0.75rem 0.875rem;background:var(--dark-2);border:1px solid rgba(196,168,130,0.1);">
+            <p style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;">Sun / Public Holidays</p>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:var(--accent);line-height:1.1;">Closed</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </section>
+
+  <div id="site-footer"></div>
+  <script src="/site.js"></script>
+</body>
+</html>

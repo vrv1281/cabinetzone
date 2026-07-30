@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robes & Storage — CabinetZone</title>
+  <link rel="icon" type="image/png" href="/brand_assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/site.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; overflow-x: hidden; }
+
+    .svc-hero {
+      position: relative; height: 72vh; min-height: 500px;
+      display: flex; align-items: flex-end; padding-bottom: 5rem; overflow: hidden;
+    }
+    .svc-hero img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .svc-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,17,26,0.94) 0%, rgba(13,17,26,0.45) 50%, rgba(13,17,26,0.18) 100%);
+    }
+    .svc-hero-content {
+      position: relative; z-index: 1;
+      max-width: 1440px; margin: 0 auto; padding: 0 3rem; width: 100%;
+    }
+
+    .feature-card {
+      padding: 2rem; background: var(--dark-2);
+      border: 1px solid rgba(196,168,130,0.1);
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .feature-card:hover { border-color: rgba(196,168,130,0.32); transform: translateY(-3px); }
+
+    .gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .gallery-slot { overflow: hidden; }
+    .gallery-slot:hover .gallery-img { transform: scale(1.05); }
+
+    @media (max-width: 767px) {
+      .svc-hero { height: 55vh; padding-bottom: 3rem; }
+      .svc-hero-content, .svc-inner { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      .feat-grid { grid-template-columns: 1fr 1fr !important; }
+      .gallery-grid { grid-template-columns: 1fr !important; height: auto !important; }
+      .gallery-grid > div:first-child { grid-row: auto !important; height: 260px; }
+      .gallery-grid > div { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-nav"></div>
+
+  <!-- Hero -->
+  <div class="svc-hero">
+    <img src="https://images.unsplash.com/photo-1659930087003-2d64e33181f7?w=1440&h=860&fit=crop&q=85&auto=format" alt="Custom Robes and Storage by CabinetZone" />
+    <div class="svc-hero-overlay"></div>
+    <div class="svc-hero-content">
+      <p class="label">Robes &amp; Storage</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.75rem,5vw,4.5rem);font-weight:300;line-height:1.08;letter-spacing:-0.03em;color:#fff;max-width:640px;margin-top:0.5rem;">
+        Every Centimetre<br/><em style="color:var(--accent);font-style:italic;">Working Harder</em>
+      </h1>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <section style="background:var(--light);">
+  <div class="svc-inner" style="padding:5.5rem 3rem 4rem;max-width:1440px;margin:0 auto;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);opacity:0.65;text-decoration:none;margin-bottom:3.5rem;transition:opacity 0.2s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to Home
+    </a>
+    <div style="max-width:720px;">
+      <p class="label">What We Do</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.15;letter-spacing:-0.025em;color:var(--dark);margin-bottom:1.5rem;">
+        Storage that's as considered<br/>as the rest of your <em style="color:var(--accent);">home.</em>
+      </h2>
+      <p style="font-size:1rem;color:var(--warm-mid);line-height:1.82;font-weight:300;margin-bottom:1.25rem;">
+        A well-designed robe or storage system isn't just about fitting your things in — it's about waking up every morning to a space that's calm, organised, and genuinely beautiful. That's what we build.
+      </p>
+      <p style="font-size:1rem;color:var(--warm-mid);line-height:1.82;font-weight:300;">
+        From large walk-in robes with island benches to slim sliding door wardrobes in compact bedrooms, we make every square metre count without sacrificing style.
+      </p>
+    </div>
+  </div>
+  </section>
+
+  <!-- Features -->
+  <section style="background:var(--dark);">
+  <div class="svc-inner" style="padding:5rem 3rem 6rem;max-width:1440px;margin:0 auto;">
+    <p class="label">What's Included</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.875rem,3vw,2.75rem);font-weight:300;color:#fff;margin-bottom:3rem;letter-spacing:-0.02em;">A place for everything — beautifully.</h2>
+    <div class="feat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v6M15 3v6"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Walk-In Robes</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Full-height joinery with hanging sections, drawers, shoe racks, and optional island bench with mirror.</p>
+      </div>
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="20" height="18" rx="1"/><path d="M12 3v18M2 8h10M12 8h10"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Sliding Door Wardrobes</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Space-efficient sliding systems with mirrored, panel, or glass door options in any finish.</p>
+      </div>
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 22V4a2 2 0 012-2h12a2 2 0 012 2v18"/><path d="M4 11h16M4 16h16"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Linen Presses</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Tall, slim, and highly functional — fixed or adjustable shelving to suit sheets, towels, and more.</p>
+      </div>
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 5h20"/><path d="M7 5v2a2 2 0 004 0V5"/><path d="M13 5v2a2 2 0 004 0V5"/><rect x="2" y="16" width="20" height="3" rx="0.5"/><path d="M5 19v2M19 19v2"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Mudroom Storage</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Entry lockers, bench seats with shoe storage, and hooks that keep the rest of your home tidy.</p>
+      </div>
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="20" height="6" rx="0.5"/><path d="M12 2v6"/><rect x="4" y="10" width="16" height="12" rx="0.5"/><circle cx="12" cy="16" r="4"/><circle cx="12" cy="16" r="1.5"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Laundry Cabinetry</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Overhead and under-bench cabinets, broom cupboards, and concealed appliance housing for a clean laundry.</p>
+      </div>
+
+      <div class="feature-card">
+        <div style="width:36px;height:36px;color:var(--accent);margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="7" width="22" height="3" rx="0.5"/><rect x="2" y="10" width="8" height="12" rx="0.5"/><rect x="14" y="10" width="8" height="12" rx="0.5"/><path d="M5 16h2M17 16h2"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.5rem;">Garage Storage</h3>
+        <p style="font-size:0.875rem;color:rgba(255,255,255,0.42);line-height:1.72;font-weight:300;">Heavy-duty garage cabinetry in powder-coated steel or durable melamine — built for a working space.</p>
+      </div>
+
+    </div>
+  </div>
+  </section>
+
+  <!-- Gallery -->
+  <section style="background:var(--light);">
+  <div class="svc-inner" style="padding:5rem 3rem 6rem;max-width:1440px;margin:0 auto;">
+    <p class="label">Recent Work</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.875rem,3vw,2.75rem);font-weight:300;color:var(--dark);margin-bottom:2.5rem;letter-spacing:-0.02em;">From our storage portfolio.</h2>
+    <div class="gallery-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.875rem;height:380px;">
+      <div class="gallery-slot">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1659930087003-2d64e33181f7?w=600&h=480&fit=crop&q=85&auto=format" alt="Custom walk-in robe" />
+      </div>
+      <div class="gallery-slot">
+        <img class="gallery-img" src="https://placehold.co/600x480/1e2640/c4a882?text=Walk-In+Robe" alt="Walk-in robe interior" />
+      </div>
+      <div class="gallery-slot">
+        <img class="gallery-img" src="https://placehold.co/600x480/22304c/c4a882?text=Sliding+Wardrobe" alt="Sliding door wardrobe" />
+      </div>
+    </div>
+    <div style="text-align:right;margin-top:1.25rem;">
+      <a href="projects.html" style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:gap 0.25s ease;" onmouseover="this.style.gap='0.875rem'" onmouseout="this.style.gap='0.5rem'">
+        View full portfolio
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+  </section>
+
+  <div id="site-contact-form"></div>
+  <div id="site-footer"></div>
+  <script src="/site.js"></script>
+</body>
+</html>
