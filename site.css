@@ -27,13 +27,13 @@ h1, h2, h3, h4, .serif { font-family: 'Cormorant Garamond', serif; }
 /* ── Nav ── */
 #navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 3rem;
+  padding: 0.75rem 3rem;
   transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
 }
 #navbar.scrolled {
   background: rgba(19,23,32,0.96);
   backdrop-filter: blur(14px);
-  padding: 1rem 3rem;
+  padding: 0.5rem 3rem;
   box-shadow: 0 1px 0 rgba(196,168,130,0.12);
 }
 .nav-inner {
