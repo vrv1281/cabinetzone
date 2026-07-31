@@ -3,27 +3,22 @@
     <style>@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;display=swap');</style>
   </defs>
 
-  <rect width="100" height="100" rx="10" fill="#131720"/>
+  <!-- Full closed square border -->
+  <rect x="14" y="11" width="73" height="78"
+        stroke="#c4a882" stroke-width="4.5" fill="none"/>
 
-  <!-- Open square: top + right + bottom only — left side is open (the break) -->
-  <path d="M12,10 L92,10 L92,92 L12,92"
-        stroke="#c4a882" stroke-width="3.5" fill="none"
-        stroke-linejoin="miter" stroke-linecap="square"/>
+  <!-- Cabinet door hinge on left border, centred vertically -->
+  <rect x="9" y="36" width="10" height="28"
+        fill="none" stroke="#c4a882" stroke-width="1.8"/>
+  <circle cx="14" cy="43" r="2.3" fill="#c4a882"/>
+  <circle cx="14" cy="50" r="2.3" fill="#c4a882"/>
+  <circle cx="14" cy="57" r="2.3" fill="#c4a882"/>
 
-  <!-- Inner horizontal bar dividing B (top/CABINET) from Z (bottom/ZONE) -->
-  <line x1="12" y1="51" x2="92" y2="51"
-        stroke="#c4a882" stroke-width="3.5" stroke-linecap="square"/>
+  <!-- Circle dot — upper right inside square -->
+  <circle cx="76" cy="24" r="3.5" fill="#c4a882"/>
 
-  <!-- Circle dot — upper-right, inside the top section -->
-  <circle cx="80" cy="28" r="4.5" fill="#c4a882"/>
-
-  <!-- B: left edge at the square's open-left position, baseline sits on inner bar -->
-  <text x="12" y="51"
+  <!-- CZ — centred in square interior -->
+  <text x="26" y="64"
         font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
-        font-weight="300" font-size="46" fill="#c4a882">B</text>
-
-  <!-- Z: left edge at the same position, cap-top touches the inner bar -->
-  <text x="12" y="84"
-        font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
-        font-weight="300" font-size="46" fill="#c4a882">Z</text>
+        font-weight="300" font-size="40" fill="#c4a882">CZ</text>
 </svg>
