@@ -5,20 +5,20 @@
 
   <!-- Full closed square border -->
   <rect x="14" y="11" width="73" height="78"
-        stroke="#c4a882" stroke-width="4.5" fill="none"/>
+        stroke="#131d35" stroke-width="4.5" fill="none"/>
 
   <!-- Cabinet door hinge on left border, centred vertically -->
   <rect x="9" y="36" width="10" height="28"
-        fill="none" stroke="#c4a882" stroke-width="1.8"/>
-  <circle cx="14" cy="43" r="2.3" fill="#c4a882"/>
-  <circle cx="14" cy="50" r="2.3" fill="#c4a882"/>
-  <circle cx="14" cy="57" r="2.3" fill="#c4a882"/>
+        fill="none" stroke="#131d35" stroke-width="1.8"/>
+  <circle cx="14" cy="43" r="2.3" fill="#131d35"/>
+  <circle cx="14" cy="50" r="2.3" fill="#131d35"/>
+  <circle cx="14" cy="57" r="2.3" fill="#131d35"/>
 
   <!-- Circle dot — upper right inside square -->
-  <circle cx="76" cy="24" r="3.5" fill="#c4a882"/>
+  <circle cx="76" cy="24" r="3.5" fill="#131d35"/>
 
   <!-- CZ — centred in square interior -->
   <text x="26" y="64"
         font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
-        font-weight="300" font-size="40" fill="#c4a882">CZ</text>
+        font-weight="300" font-size="40" fill="#131d35">CZ</text>
 </svg>
