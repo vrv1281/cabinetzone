@@ -1,24 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <style>@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;display=swap');</style>
-  </defs>
 
-  <!-- Full closed square border -->
-  <rect x="14" y="11" width="73" height="78"
-        stroke="#131d35" stroke-width="4.5" fill="none"/>
+  <!-- Square border — bold stroke, no fill (transparent interior) -->
+  <rect x="19" y="12" width="64" height="76"
+        stroke="#131d35" stroke-width="8" fill="none"/>
 
-  <!-- Cabinet door hinge on left border, centred vertically -->
-  <rect x="9" y="36" width="10" height="28"
-        fill="none" stroke="#131d35" stroke-width="1.8"/>
-  <circle cx="14" cy="43" r="2.3" fill="#131d35"/>
-  <circle cx="14" cy="50" r="2.3" fill="#131d35"/>
-  <circle cx="14" cy="57" r="2.3" fill="#131d35"/>
+  <!-- Hinge — filled solid rectangle overlapping the left edge -->
+  <rect x="11" y="33" width="16" height="34"
+        fill="#131d35"/>
 
-  <!-- Circle dot — upper right inside square -->
-  <circle cx="76" cy="24" r="3.5" fill="#131d35"/>
+  <!-- Dot — upper right corner inside the square -->
+  <circle cx="71" cy="27" r="6" fill="#131d35"/>
 
-  <!-- CZ — centred in square interior -->
-  <text x="26" y="64"
-        font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
-        font-weight="300" font-size="40" fill="#131d35">CZ</text>
 </svg>
