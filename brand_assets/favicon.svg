@@ -1,16 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Dark navy background — no white square, blends cleanly in any browser chrome -->
-  <rect width="32" height="32" rx="5" fill="#131720"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;display=swap');</style>
+  </defs>
 
-  <!-- Outer square frame (logo boundary) -->
-  <rect x="2.5" y="2.5" width="27" height="27" stroke="#c4a882" stroke-width="1.4" fill="none"/>
+  <rect width="100" height="100" rx="10" fill="#131720"/>
 
-  <!-- Circle dot — top-right, mirrors position in full logo mark -->
-  <circle cx="25" cy="7.5" r="2" fill="#c4a882"/>
+  <!-- Open square: top + right + bottom only — left side is open (the break) -->
+  <path d="M12,10 L92,10 L92,92 L12,92"
+        stroke="#c4a882" stroke-width="3.5" fill="none"
+        stroke-linejoin="miter" stroke-linecap="square"/>
 
-  <!-- Inner L-shape: horizontal line across at mid-height -->
-  <line x1="8" y1="17" x2="29.5" y2="17" stroke="#c4a882" stroke-width="1.4"/>
+  <!-- Inner horizontal bar dividing B (top/CABINET) from Z (bottom/ZONE) -->
+  <line x1="12" y1="51" x2="92" y2="51"
+        stroke="#c4a882" stroke-width="3.5" stroke-linecap="square"/>
 
-  <!-- Inner L-shape: vertical line down on the left -->
-  <line x1="8" y1="17" x2="8" y2="29.5" stroke="#c4a882" stroke-width="1.4"/>
+  <!-- Circle dot — upper-right, inside the top section -->
+  <circle cx="80" cy="28" r="4.5" fill="#c4a882"/>
+
+  <!-- B: left edge at the square's open-left position, baseline sits on inner bar -->
+  <text x="12" y="51"
+        font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
+        font-weight="300" font-size="46" fill="#c4a882">B</text>
+
+  <!-- Z: left edge at the same position, cap-top touches the inner bar -->
+  <text x="12" y="84"
+        font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
+        font-weight="300" font-size="46" fill="#c4a882">Z</text>
 </svg>
