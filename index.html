@@ -619,17 +619,9 @@
         <defs><pattern id="proc-dots" x="0" y="0" width="38" height="38" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.1" fill="rgba(196,168,130,0.10)"/></pattern></defs>
         <rect width="100%" height="100%" fill="url(#proc-dots)"/>
       </svg>
-      <!-- Brand mark watermark — bottom-right corner only, non-competing -->
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-           style="position:absolute;bottom:-8%;right:-4%;width:38%;max-width:340px;opacity:0.04;pointer-events:none;">
-        <rect x="14" y="11" width="73" height="78" stroke="rgba(196,168,130,1)" stroke-width="4.5"/>
-        <rect x="9" y="36" width="10" height="28" fill="none" stroke="rgba(196,168,130,1)" stroke-width="1.8"/>
-        <circle cx="14" cy="43" r="2.3" fill="rgba(196,168,130,1)"/>
-        <circle cx="14" cy="50" r="2.3" fill="rgba(196,168,130,1)"/>
-        <circle cx="14" cy="57" r="2.3" fill="rgba(196,168,130,1)"/>
-        <circle cx="76" cy="24" r="3.5" fill="rgba(196,168,130,1)"/>
-        <text x="26" y="64" font-family="'Futura','Century Gothic',sans-serif" font-weight="300" font-size="40" fill="rgba(196,168,130,1)">CZ</text>
-      </svg>
+      <!-- Logo watermark — bottom-right, fully inside section bounds -->
+      <img src="brand_assets/logo_white.png" alt="" aria-hidden="true"
+           style="position:absolute;bottom:3rem;right:4rem;width:min(32%,300px);opacity:0.05;pointer-events:none;user-select:none;">
     </div>
 
     <div style="max-width:1440px;margin:0 auto;position:relative;z-index:1;">
@@ -681,27 +673,27 @@
         We'd love to hear about your project. Call us, send an email, or visit our showroom in Laverton North.
       </p>
       <div class="mob-stack" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-bottom:3rem;">
-        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+        <a href="tel:+61495000365" style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;text-decoration:none;display:block;transition:border-color 0.25s ease,background 0.25s ease;" onmouseover="this.style.borderColor='rgba(196,168,130,0.45)';this.style.background='#e8e4de'" onmouseout="this.style.borderColor='rgba(19,23,32,0.1)';this.style.background='var(--light)'">
           <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 7.18 2 2 0 015 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 12a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0122 19.5v-.58z"/></svg>
           </div>
           <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Phone</p>
-          <a href="tel:+61495000365" style="color:var(--dark);font-size:1rem;text-decoration:none;font-weight:400;transition:color 0.2s ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dark)'">0495 000 365</a>
-        </div>
-        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+          <span style="color:var(--dark);font-size:1rem;font-weight:400;">0495 000 365</span>
+        </a>
+        <a href="mailto:info@cabinetzone.com.au" style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;text-decoration:none;display:block;transition:border-color 0.25s ease,background 0.25s ease;" onmouseover="this.style.borderColor='rgba(196,168,130,0.45)';this.style.background='#e8e4de'" onmouseout="this.style.borderColor='rgba(19,23,32,0.1)';this.style.background='var(--light)'">
           <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
           <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Email</p>
-          <a href="mailto:info@cabinetzone.com.au" style="color:var(--dark);font-size:1rem;text-decoration:none;font-weight:400;transition:color 0.2s ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dark)'">info@cabinetzone.com.au</a>
-        </div>
-        <div style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;">
+          <span style="color:var(--dark);font-size:1rem;font-weight:400;">info@cabinetzone.com.au</span>
+        </a>
+        <a href="https://www.google.com/maps/search/?api=1&query=55A+Patch+Circuit+Laverton+North+VIC+3026+Australia" target="_blank" rel="noopener" style="padding:2rem 1.5rem;border:1px solid rgba(19,23,32,0.1);background:var(--light);text-align:center;text-decoration:none;display:block;transition:border-color 0.25s ease,background 0.25s ease;" onmouseover="this.style.borderColor='rgba(196,168,130,0.45)';this.style.background='#e8e4de'" onmouseout="this.style.borderColor='rgba(19,23,32,0.1)';this.style.background='var(--light)'">
           <div style="width:42px;height:42px;border:1px solid rgba(196,168,130,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--accent);">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <p style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,23,32,0.38);margin-bottom:0.5rem;">Showroom</p>
-          <p style="color:var(--dark);font-size:1rem;font-weight:400;line-height:1.55;">55A Patch Circuit<br/>Laverton North VIC 3026</p>
-        </div>
+          <span style="color:var(--dark);font-size:1rem;font-weight:400;line-height:1.55;display:block;">55A Patch Circuit<br/>Laverton North VIC 3026</span>
+        </a>
       </div>
       <a href="contact.html" style="display:inline-flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:gap 0.25s ease;" onmouseover="this.style.gap='0.95rem'" onmouseout="this.style.gap='0.6rem'">
         Visit Our Showroom &amp; Get Directions
