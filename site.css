@@ -217,4 +217,5 @@ select.finput.has-value { color: #fff; }
   .mob-footer { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
   footer img[style*="height:84px"] { height: 64px !important; }
   .mob-stack { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+  .proc-watermark { display: none !important; }
 }
