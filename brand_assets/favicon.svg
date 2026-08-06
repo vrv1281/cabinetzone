@@ -1,24 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <style>@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;display=swap');</style>
-  </defs>
+  <style>
+    .mark { stroke: #131d35; fill: #131d35; }
+    @media (prefers-color-scheme: dark) {
+      .mark { stroke: #f7f4ef; fill: #f7f4ef; }
+    }
+  </style>
 
-  <!-- Full closed square border -->
   <rect x="14" y="11" width="73" height="78"
-        stroke="#131d35" stroke-width="4.5" fill="none"/>
+        stroke-width="4.5" fill="none" class="mark"/>
 
-  <!-- Cabinet door hinge on left border, centred vertically -->
   <rect x="9" y="36" width="10" height="28"
-        fill="none" stroke="#131d35" stroke-width="1.8"/>
-  <circle cx="14" cy="43" r="2.3" fill="#131d35"/>
-  <circle cx="14" cy="50" r="2.3" fill="#131d35"/>
-  <circle cx="14" cy="57" r="2.3" fill="#131d35"/>
+        fill="none" stroke-width="1.8" class="mark"/>
+  <circle cx="14" cy="43" r="2.3" class="mark"/>
+  <circle cx="14" cy="50" r="2.3" class="mark"/>
+  <circle cx="14" cy="57" r="2.3" class="mark"/>
 
-  <!-- Circle dot — upper right inside square -->
-  <circle cx="76" cy="24" r="3.5" fill="#131d35"/>
+  <circle cx="76" cy="24" r="3.5" class="mark"/>
 
-  <!-- CZ — centred in square interior -->
   <text x="26" y="64"
         font-family="'Josefin Sans','Futura','Century Gothic',sans-serif"
-        font-weight="300" font-size="40" fill="#131d35">CZ</text>
+        font-weight="300" font-size="40" class="mark">CZ</text>
 </svg>
