@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <style>
-    .mark { stroke: #131d35; fill: #131d35; }
-    @media (prefers-color-scheme: dark) {
-      .mark { stroke: #f7f4ef; fill: #f7f4ef; }
+    /* Gold works on both light and dark tab bars without any media query.
+       The media query upgrades contrast on browsers that support it. */
+    .mark { stroke: #c4a882; fill: #c4a882; }
+    @media (prefers-color-scheme: light) {
+      .mark { stroke: #131d35; fill: #131d35; }
     }
   </style>
 
