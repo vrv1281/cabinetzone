@@ -7,7 +7,7 @@
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#131720" />
   <link rel="apple-touch-icon" href="/brand_assets/apple-touch-icon.png" />
-  <script>(function(){var m=window.matchMedia('(prefers-color-scheme: dark)');function u(d){var old=document.getElementById('fav');if(old)old.remove();var l=document.createElement('link');l.rel='icon';l.type='image/png';l.id='fav';l.href=(d?'/brand_assets/favicon.png':'/brand_assets/favicon-light.png')+'?v='+Date.now();document.head.appendChild(l);}u(m.matches);m.addEventListener('change',function(e){u(e.matches);});}());</script>
+  <script>(function(){var m=window.matchMedia('(prefers-color-scheme: dark)');function u(d){var o=document.getElementById('fav');if(o)o.remove();var l=document.createElement('link');l.rel='icon';l.type='image/png';l.id='fav';l.href=(d?'/brand_assets/favicon.png':'/brand_assets/favicon-light.png')+'?v='+Date.now();document.head.appendChild(l);var t=document.title;document.title=t+'​';setTimeout(function(){document.title=t;},0);}u(m.matches);m.addEventListener('change',function(e){u(e.matches);});window.addEventListener('focus',function(){u(m.matches);});document.addEventListener('visibilitychange',function(){if(!document.hidden)u(m.matches);});}());</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
