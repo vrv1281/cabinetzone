@@ -289,7 +289,7 @@
 
     // Flatten to individual photo items, each carrying its project title + full strip
     const photos = projects.flatMap(p =>
-      p.photos.map(src => ({ src, cat: p.cat, title: p.title, strip: p.photos }))
+      p.photos.map(item => ({ ...item, cat: p.cat, title: p.title, strip: p.photos }))
     );
 
     document.getElementById('count-label').textContent =
