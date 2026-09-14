@@ -15,50 +15,50 @@ const MIME = {
   '.svg': 'image/svg+xml', '.ico': 'image/x-icon',
   '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf',
   '.webp': 'image/webp',
-};
-
-const CAT_LABELS = {
-  kitchen: 'Kitchen', bathroom: 'Bathroom', builtin: 'Built-Ins',
-  commercial: 'Commercial', office: 'Office', robe: 'Robes', laundry: 'Laundry',
+  '.mov': 'video/quicktime', '.mp4': 'video/mp4',
 };
 
 function isDir(p)   { try { return fs.statSync(p).isDirectory(); } catch { return false; } }
 function isImage(f) { return /\.(jpe?g|png|webp)$/i.test(f); }
+function isVideo(f) { return /\.(mov|mp4|webm|m4v)$/i.test(f); }
+function isMedia(f) { return isImage(f) || isVideo(f); }
 
-// Slug to Title: "riverside-modern-kitchen" → "Riverside Modern Kitchen"
-function toTitle(slug) {
-  return slug.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+// Folder name to display title: "Ardha Road_Tarneit" → "Ardha Road, Tarneit"
+function toTitle(name) {
+  return name.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-// Scan brand_assets/projects/{category}/{project}/ and return structured data
+// Folder name to URL-safe slug for tab filtering
+function toSlug(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+// Scan brand_assets/projects/{project}/ — one folder per project
 function scanPhotos() {
   if (!fs.existsSync(PROJECTS_DIR)) return [];
 
   return fs.readdirSync(PROJECTS_DIR)
-    .filter(cat => isDir(path.join(PROJECTS_DIR, cat)))
+    .filter(proj => isDir(path.join(PROJECTS_DIR, proj)))
     .sort()
-    .flatMap(cat => {
-      const catPath = path.join(PROJECTS_DIR, cat);
-      const label   = CAT_LABELS[cat] ?? toTitle(cat);
+    .map(proj => {
+      const projPath = path.join(PROJECTS_DIR, proj);
+      const allMedia = fs.readdirSync(projPath).filter(isMedia).sort();
 
-      return fs.readdirSync(catPath)
-        .filter(proj => isDir(path.join(catPath, proj)))
-        .sort()
-        .map(proj => {
-          const projPath = path.join(catPath, proj);
-          const allImgs  = fs.readdirSync(projPath).filter(isImage).sort();
+      // cover.jpg/mp4 first, then the rest alphabetically
+      const coverFile = allMedia.find(f => /^cover\./i.test(f));
+      const rest      = allMedia.filter(f => !/^cover\./i.test(f));
+      const ordered   = coverFile ? [coverFile, ...rest] : allMedia;
 
-          // cover.jpg first, then the rest alphabetically
-          const coverFile = allImgs.find(f => /^cover\./i.test(f));
-          const rest      = allImgs.filter(f => !/^cover\./i.test(f));
-          const ordered   = coverFile ? [coverFile, ...rest] : allImgs;
+      const cat    = toSlug(proj);
+      const title  = toTitle(proj);
+      const photos = ordered.map(f => ({
+        src:  `/brand_assets/projects/${encodeURIComponent(proj)}/${encodeURIComponent(f)}`,
+        type: isVideo(f) ? 'video' : 'image',
+      }));
 
-          const photos = ordered.map(f => `/brand_assets/projects/${cat}/${proj}/${f}`);
-
-          return { cat, label, title: toTitle(proj), photos };
-        })
-        .filter(p => p.photos.length > 0);
-    });
+      return { cat, label: title, title, photos };
+    })
+    .filter(p => p.photos.length > 0);
 }
 
 http.createServer((req, res) => {
@@ -72,7 +72,7 @@ http.createServer((req, res) => {
   }
 
   if (url === '/' || url.endsWith('/')) url += 'index.html';
-  const filePath = path.join(__dirname, url);
+  const filePath = path.join(__dirname, decodeURIComponent(url));
   const ext      = path.extname(filePath).toLowerCase();
 
   fs.readFile(filePath, (err, data) => {

@@ -134,7 +134,8 @@
       display: flex; align-items: center; justify-content: center;
       padding: 2rem 5rem;
     }
-    #hz-lb-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; user-select: none; }
+    #hz-lb-img   { max-width: 100%; max-height: 100%; object-fit: contain; display: block; user-select: none; }
+    #hz-lb-video { max-width: 100%; max-height: 100%; object-fit: contain; display: none; outline: none; }
     .hz-lb-nav {
       position: absolute; top: 50%; transform: translateY(-50%);
       width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
@@ -752,6 +753,7 @@
     </div>
     <div class="hz-lb-stage">
       <img id="hz-lb-img" src="" alt="" />
+      <video id="hz-lb-video" controls autoplay loop playsinline></video>
       <button class="hz-lb-nav" id="hz-lb-prev" aria-label="Previous photo">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
@@ -779,11 +781,14 @@
         card.setAttribute('tabindex', '0');
         card.setAttribute('role', 'button');
         card.setAttribute('aria-label', `View ${p.title}`);
-        card.innerHTML = `
-          <img src="${p.cover}" alt="${p.title}" loading="lazy" />
+        const thumbEl = p.coverType === 'video'
+          ? `<video src="${p.coverVideo}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+          : `<img src="${p.cover}" alt="${p.title}" loading="lazy" />`;
+        card.innerHTML = `${thumbEl}
           <div class="port-overlay">
             <div class="port-info">
-              <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:400;color:#fff;line-height:1.2;">${p.title}</h3>
+              ${p.coverType === 'video' ? '<div style="margin-bottom:0.5rem;display:flex;justify-content:center;"><svg width="36" height="36" viewBox="0 0 24 24" fill="rgba(255,255,255,0.85)"><polygon points="5,3 19,12 5,21"/></svg></div>' : ''}
+              <h3 style="font-family:\'Cormorant Garamond\',serif;font-size:1.75rem;font-weight:400;color:#fff;line-height:1.2;">${p.title}</h3>
             </div>
           </div>`;
         hzGrid.appendChild(card);
@@ -803,22 +808,44 @@
     }
 
     function hzSync() {
-      const photo = hzCur.photos[hzIdx];
-      document.getElementById('hz-lb-img').src = photo.src;
-      document.getElementById('hz-lb-img').alt = hzCur.title + ' — ' + photo.cap;
+      const photo  = hzCur.photos[hzIdx];
+      const imgEl  = document.getElementById('hz-lb-img');
+      const vidEl  = document.getElementById('hz-lb-video');
+
+      if (photo.type === 'video') {
+        imgEl.style.display = 'none';
+        vidEl.style.display = 'block';
+        vidEl.src = photo.src;
+        vidEl.play().catch(() => {});
+      } else {
+        vidEl.pause(); vidEl.src = ''; vidEl.style.display = 'none';
+        imgEl.style.display = 'block';
+        imgEl.src = photo.src;
+        imgEl.alt = hzCur.title + (photo.cap ? ' — ' + photo.cap : '');
+      }
+
       document.getElementById('hz-lb-count').textContent = (hzIdx + 1) + ' of ' + hzCur.photos.length;
       document.getElementById('hz-lb-prev').classList.toggle('dim', hzIdx === 0);
       document.getElementById('hz-lb-next').classList.toggle('dim', hzIdx === hzCur.photos.length - 1);
+
       const strip = document.getElementById('hz-lb-strip');
-      strip.innerHTML = hzCur.photos.map((ph, i) =>
-        `<img class="hz-lb-thumb${i === hzIdx ? ' active' : ''}" src="${ph.src}" alt="${ph.cap}" data-i="${i}" loading="lazy" />`
-      ).join('');
-      strip.querySelectorAll('.hz-lb-thumb').forEach(t =>
+      strip.innerHTML = hzCur.photos.map((ph, i) => {
+        const cls = `hz-lb-thumb${i === hzIdx ? ' active' : ''}`;
+        return ph.type === 'video'
+          ? `<video class="${cls}" src="${ph.src}" muted preload="metadata" data-i="${i}"
+               style="width:80px;height:54px;object-fit:cover;flex-shrink:0;cursor:pointer;
+                      opacity:${i === hzIdx ? 1 : 0.32};border:1px solid ${i === hzIdx ? 'var(--accent)' : 'transparent'};"></video>`
+          : `<img class="${cls}" src="${ph.src}" alt="${ph.cap}" data-i="${i}" loading="lazy" />`;
+      }).join('');
+      strip.querySelectorAll('[data-i]').forEach(t =>
         t.addEventListener('click', () => { hzIdx = +t.dataset.i; hzSync(); })
       );
     }
 
     function hzClose() {
+      const v = document.getElementById('hz-lb-video');
+      v.pause(); v.src = ''; v.style.display = 'none';
+      document.getElementById('hz-lb-img').style.display = 'block';
       document.getElementById('hz-lightbox').classList.remove('open');
       document.body.style.overflow = '';
       hzCur = null;

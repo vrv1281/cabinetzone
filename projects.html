@@ -64,11 +64,25 @@
       break-inside: avoid; margin-bottom: 10px;
       position: relative; overflow: hidden; cursor: pointer;
     }
-    .masonry-item img {
+    .masonry-item img,
+    .masonry-item video {
       width: 100%; height: auto; display: block;
       transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .masonry-item:hover img { transform: scale(1.04); }
+    .masonry-item:hover img,
+    .masonry-item:hover video { transform: scale(1.04); }
+
+    /* Play icon for video tiles */
+    .m-play-btn {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.65);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; pointer-events: none;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .masonry-item:hover .m-play-btn { border-color: var(--accent); color: var(--accent); }
 
     /* Project name overlay */
     .m-overlay {
@@ -179,7 +193,7 @@
         Every Space, <em style="color:var(--accent);font-style:italic;">Crafted</em> to Last
       </h1>
       <p style="font-size:1.0625rem;color:rgba(255,255,255,0.38);font-weight:300;max-width:500px;line-height:1.7;">
-        Browse our work across kitchens, bathrooms, and built-in robes. Click any photo to explore in full.
+        Real projects, real homes. Click any photo to explore in full.
       </p>
       <div class="cat-tabs" id="cat-tabs" role="tablist"></div>
     </div>
@@ -214,7 +228,7 @@
       </button>
     </div>
     <div class="lb-stage">
-      <img id="lb-img" src="" alt="" />
+      <div id="lb-media" style="max-width:100%;max-height:100%;display:flex;align-items:center;justify-content:center;"></div>
       <button class="lb-nav" id="lb-prev" aria-label="Previous">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
@@ -226,10 +240,7 @@
   </div>
 
   <script>
-  // Preferred tab order
-  const CAT_ORDER = ['kitchen', 'bathroom', 'builtin', 'commercial', 'office', 'robe', 'laundry'];
-
-  let categories = []; // [{cat, label, photos:[]}]
+  let categories = []; // [{cat, label, title, photos:[]}]
   let lbPhotos = [], lbIdx = 0;
 
   // ── Load photo data: try live API first, fall back to static manifest ──
@@ -238,16 +249,19 @@
       const r = await fetch('/api/photos', { cache: 'no-store' });
       if (r.ok) { categories = await r.json(); return; }
     } catch {}
-    // Fallback: use photos-manifest.js (loaded via <script> tag above)
     if (typeof PHOTOS_MANIFEST !== 'undefined') categories = PHOTOS_MANIFEST;
   }
 
-  // ── Build category tabs ──
+  // ── Build project tabs (one tab per project folder) ──
   function buildTabs() {
     const tabsEl = document.getElementById('cat-tabs');
     tabsEl.innerHTML = '';
-    const orderedCats = CAT_ORDER.filter(c => categories.some(x => x.cat === c));
-    categories.forEach(c => { if (!orderedCats.includes(c.cat)) orderedCats.push(c.cat); });
+
+    // Only show tabs if there is more than one project
+    if (categories.length <= 1) {
+      tabsEl.style.display = 'none';
+      return;
+    }
 
     const makeTab = (cat, label) => {
       const btn = document.createElement('button');
@@ -255,10 +269,8 @@
       btn.dataset.cat = cat; btn.textContent = label;
       tabsEl.appendChild(btn);
     };
-    makeTab('all', 'All');
-    orderedCats.forEach(cat => {
-      makeTab(cat, categories.find(c => c.cat === cat)?.label || cat);
-    });
+    makeTab('all', 'All Projects');
+    categories.forEach(p => makeTab(p.cat, p.label));
 
     tabsEl.addEventListener('click', e => {
       const btn = e.target.closest('.cat-tab');
@@ -288,11 +300,12 @@
     photos.forEach((photo, i) => {
       const item = document.createElement('div');
       item.className = 'masonry-item';
-      item.innerHTML = `
-        <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
-        <div class="m-overlay">
-          <h3 class="m-title">${photo.title}</h3>
-        </div>`;
+      const mediaTpl = photo.type === 'video'
+        ? `<video src="${photo.src}" muted playsinline preload="metadata" style="width:100%;height:auto;display:block;"></video>
+           <div class="m-play-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>`
+        : `<img src="${photo.src}" alt="${photo.title}" loading="lazy" />`;
+      item.innerHTML = `${mediaTpl}
+        <div class="m-overlay"><h3 class="m-title">${photo.title}</h3></div>`;
       item.addEventListener('click', () => openLightbox(photos, i));
       grid.appendChild(item);
     });
@@ -308,22 +321,43 @@
   }
 
   function syncLightbox() {
-    document.getElementById('lb-img').src = lbPhotos[lbIdx].src;
+    const item = lbPhotos[lbIdx];
+    const mediaEl = document.getElementById('lb-media');
+
+    // Pause any playing video before replacing
+    const prev = mediaEl.querySelector('video');
+    if (prev) { prev.pause(); prev.src = ''; }
+
+    if (item.type === 'video') {
+      mediaEl.innerHTML = `<video src="${item.src}" controls autoplay loop playsinline
+        style="max-width:100%;max-height:100%;object-fit:contain;outline:none;"></video>`;
+    } else {
+      mediaEl.innerHTML = `<img src="${item.src}" alt="${item.title || ''}"
+        style="max-width:100%;max-height:100%;object-fit:contain;display:block;user-select:none;">`;
+    }
+
     document.getElementById('lb-count').textContent = (lbIdx + 1) + ' / ' + lbPhotos.length;
     document.getElementById('lb-prev').classList.toggle('dim', lbIdx === 0);
     document.getElementById('lb-next').classList.toggle('dim', lbIdx === lbPhotos.length - 1);
 
     const strip = document.getElementById('lb-strip');
-    strip.innerHTML = lbPhotos.map((p, i) =>
-      `<img class="lb-thumb${i === lbIdx ? ' active' : ''}" src="${p.src}" alt="" data-i="${i}" loading="lazy" />`
-    ).join('');
-    strip.querySelectorAll('.lb-thumb').forEach(t =>
+    strip.innerHTML = lbPhotos.map((p, i) => {
+      const cls = `lb-thumb${i === lbIdx ? ' active' : ''}`;
+      return p.type === 'video'
+        ? `<video class="${cls}" src="${p.src}" muted preload="metadata" data-i="${i}"
+             style="width:80px;height:54px;object-fit:cover;flex-shrink:0;cursor:pointer;
+                    opacity:${i === lbIdx ? 1 : 0.32};border:1px solid ${i === lbIdx ? 'var(--accent)' : 'transparent'};"></video>`
+        : `<img class="${cls}" src="${p.src}" alt="" data-i="${i}" loading="lazy" />`;
+    }).join('');
+    strip.querySelectorAll('[data-i]').forEach(t =>
       t.addEventListener('click', () => { lbIdx = +t.dataset.i; syncLightbox(); })
     );
-    strip.querySelector('.lb-thumb.active')?.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+    strip.querySelector('.active')?.scrollIntoView({ inline: 'center', behavior: 'smooth' });
   }
 
   function closeLightbox() {
+    const v = document.querySelector('#lb-media video');
+    if (v) { v.pause(); v.src = ''; }
     document.getElementById('lightbox').classList.remove('open');
     document.body.style.overflow = '';
   }
