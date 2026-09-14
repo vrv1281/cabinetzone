@@ -6,9 +6,9 @@ const PHOTOS_MANIFEST = [
     "label": "Ardha Road Tarneit",
     "title": "Ardha Road Tarneit",
     "photos": [
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Kitchen.jpg", "type": "image" },
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Pantry.jpg",  "type": "image" },
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Powder.jpg",  "type": "image" }
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Kitchen.jpg", "type": "image" },
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Pantry.jpg",  "type": "image" },
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Powder.jpg",  "type": "image" }
     ]
   },
   {
@@ -16,7 +16,7 @@ const PHOTOS_MANIFEST = [
     "label": "Walk In Robe",
     "title": "Walk In Robe",
     "photos": [
-      { "src": "/brand_assets/projects/WalkInRobe/Cricket_Cct.MOV", "type": "video" }
+      { "src": "/brand_assets/projects/WalkInRobe/WIR_CricketCct.mp4", "type": "video" }
     ]
   }
 ];

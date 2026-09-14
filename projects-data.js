@@ -6,12 +6,12 @@ const PROJECTS = [
     "cat": "ardha-road-tarneit",
     "label": "Kitchen & Bathroom",
     "title": "Ardha Road, Tarneit",
-    "cover": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Kitchen.jpg",
+    "cover": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Kitchen.jpg",
     "coverType": "image",
     "photos": [
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Kitchen.jpg", "type": "image", "cap": "Kitchen" },
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Pantry.jpg",  "type": "image", "cap": "Pantry" },
-      { "src": "/brand_assets/projects/Ardha Road_Tarneit/Ardha_Powder.jpg",  "type": "image", "cap": "Powder Room" }
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Kitchen.jpg", "type": "image", "cap": "Kitchen" },
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Pantry.jpg",  "type": "image", "cap": "Pantry" },
+      { "src": "/brand_assets/projects/Ardha_Road_Tarneit/Ardha_Powder.jpg",  "type": "image", "cap": "Powder Room" }
     ]
   },
   {
@@ -21,9 +21,9 @@ const PROJECTS = [
     "title": "Walk In Robe",
     "cover": null,
     "coverType": "video",
-    "coverVideo": "/brand_assets/projects/WalkInRobe/Cricket_Cct.MOV",
+    "coverVideo": "/brand_assets/projects/WalkInRobe/WIR_CricketCct.mp4",
     "photos": [
-      { "src": "/brand_assets/projects/WalkInRobe/Cricket_Cct.MOV", "type": "video", "cap": "" }
+      { "src": "/brand_assets/projects/WalkInRobe/WIR_CricketCct.mp4", "type": "video", "cap": "" }
     ]
   }
 ];
